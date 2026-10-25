@@ -1,0 +1,19 @@
+{
+  "name": "sito-mariagrazia-dezan",
+  "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.4",
+    "astro": "^7.4.2",
+    "sharp": "^0.35.5"
+  },
+  "devDependencies": {
+    "wrangler": "^4.152.0"
+  }
+}

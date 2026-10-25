@@ -1,0 +1,51 @@
+---
+import { url } from '../lib/url';
+import { sito } from '../data/sito';
+interface Props { titolo?: string }
+const { titolo = 'Quando lo ritieni opportuno, puoi fissare un primo colloquio.' } = Astro.props;
+---
+<section class="cta sezione" aria-labelledby="cta-titolo">
+  <div class="contenitore cta__interno">
+    <h2 id="cta-titolo">{titolo}</h2>
+    <div class="cta__azioni">
+      <a class="btn" href={url('/contatti/')}>Prenota un primo colloquio</a>
+      <p class="tenue">oppure telefona al <a href={sito.telefonoLink}>{sito.telefono}</a></p>
+    </div>
+    <p class="cta__nota tenue">
+      Per i minorenni il percorso richiede il consenso dei genitori o di chi esercita
+      la responsabilità genitoriale.
+    </p>
+  </div>
+</section>
+
+<style>
+  .cta {
+    padding-top: 0;
+  }
+  .cta__interno {
+    display: grid;
+    gap: 1.75rem;
+  }
+  .cta__interno::before {
+    content: '';
+    border-top: 1px solid var(--filetto);
+    margin-bottom: clamp(1.5rem, 4vw, 3rem);
+  }
+  .cta h2 {
+    max-width: 16em;
+  }
+  .cta__azioni {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem 1.5rem;
+  }
+  .cta__azioni p {
+    margin: 0;
+  }
+  .cta__nota {
+    font-size: var(--t-piccolo);
+    max-width: 38em;
+    margin: 0;
+  }
+</style>

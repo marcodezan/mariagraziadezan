@@ -1,0 +1,82 @@
+---
+import { url } from '../lib/url';
+// Barra fissa in basso, solo su telefono e tablet: i tre modi per mettersi in contatto
+// restano sempre a portata di pollice.
+import { sito } from '../data/sito';
+---
+<nav class="barra" aria-label="Contatti rapidi">
+  <a class="barra__voce" href={sito.telefonoLink}>
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path d="M6.6 3.5h2.6l1.4 4-2 1.4a12 12 0 0 0 6.5 6.5l1.4-2 4 1.4v2.6a1.6 1.6 0 0 1-1.7 1.6A16.5 16.5 0 0 1 5 5.2a1.6 1.6 0 0 1 1.6-1.7Z" />
+    </svg>
+    Chiama
+  </a>
+  <a class="barra__voce" href={sito.whatsappLink} rel="noopener">
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path d="M4.5 19.5l1.1-3.6A8 8 0 1 1 8.4 18.6Z" />
+    </svg>
+    WhatsApp
+  </a>
+  <a class="barra__voce barra__voce--principale" href={url('/contatti/')}>Prenota</a>
+</nav>
+
+<style>
+  .barra {
+    position: fixed;
+    inset: auto 0 0 0;
+    z-index: 50;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1.3fr;
+    gap: 0.5rem;
+    padding: 0.6rem var(--margine) calc(0.6rem + env(safe-area-inset-bottom));
+    background: var(--sfondo);
+    border-top: 1px solid var(--filetto);
+  }
+  .barra__voce {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    min-height: 2.9rem;
+    border: 1.5px solid var(--testo);
+    border-radius: 999px;
+    color: var(--testo);
+    font-weight: 600;
+    font-size: 0.98rem;
+    text-decoration: none;
+  }
+  .barra__voce:hover {
+    color: var(--testo);
+    background: var(--sabbia-chiara);
+  }
+  .barra__voce svg {
+    width: 1.1rem;
+    height: 1.1rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.7;
+    stroke-linejoin: round;
+  }
+  .barra__voce--principale {
+    background: var(--terracotta-scuro);
+    border-color: var(--terracotta-scuro);
+    color: #fff;
+  }
+  .barra__voce--principale:hover {
+    background: var(--terracotta-profondo);
+    border-color: var(--terracotta-profondo);
+    color: #fff;
+  }
+  /* Spazio in fondo alla pagina perché la barra non copra il footer */
+  :global(body) {
+    padding-bottom: calc(4.2rem + env(safe-area-inset-bottom));
+  }
+  @media (min-width: 64rem) {
+    .barra {
+      display: none;
+    }
+    :global(body) {
+      padding-bottom: 0;
+    }
+  }
+</style>

@@ -1,0 +1,218 @@
+---
+import Base from '../layouts/Base.astro';
+import Tratto from '../components/Tratto.astro';
+import FormContatto from '../components/FormContatto.astro';
+import { Picture, Image } from 'astro:assets';
+import { sito } from '../data/sito';
+import ritratto from '../assets/foto/maria-grazia-de-zan-psicologa-acilia-ritratto.jpg';
+import fotoStanza from '../assets/foto/studio-psicologa-acilia-stanza.jpg';
+
+const s = sito.studio;
+const recapiti = [
+  { etichetta: 'Telefono', valore: sito.telefono, href: sito.telefonoLink },
+  { etichetta: 'WhatsApp', valore: sito.telefono, href: sito.whatsappLink, esterno: true },
+  { etichetta: 'Email', valore: sito.email, href: `mailto:${sito.email}` },
+];
+---
+<Base
+  titolo="Contatti | Psicologa ad Acilia e online | Dott.ssa Maria Grazia De Zan"
+  descrizione="Per fissare un primo colloquio: telefono, WhatsApp, email o modulo di contatto. Studio ad Acilia (Roma) presso Poliofficina, colloqui anche online."
+>
+  <section class="apertura">
+    <div class="contenitore apertura__riga">
+      <div>
+        <h1>Contatti</h1>
+        <Tratto class="apertura__tratto" />
+        <p class="apertura__lead">
+          Per fissare un primo colloquio o chiedere informazioni puoi chiamarmi, scrivermi
+          su WhatsApp o via email, oppure usare il modulo. {sito.orari}.
+        </p>
+      </div>
+      <Image
+        class="apertura__foto"
+        src={ritratto}
+        alt="Maria Grazia De Zan, psicologa"
+        widths={[160, 320]}
+        sizes="(min-width: 64rem) 8.5rem, 5.5rem"
+        loading="eager"
+      />
+    </div>
+  </section>
+
+  <div class="contenitore contatti">
+    <div class="contatti__info">
+      <!-- Recapiti diretti -->
+      <section aria-labelledby="recapiti-titolo">
+        <h2 id="recapiti-titolo" class="sr-only">Recapiti</h2>
+        <ul class="recapiti">
+          {recapiti.map((r) => (
+            <li>
+              <a href={r.href} rel={r.esterno ? 'noopener' : undefined}>
+                <span class="recapiti__etichetta">{r.etichetta}</span>
+                <span class="recapiti__valore">{r.valore}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <!-- Studio -->
+      <section class="studio" aria-labelledby="studio-titolo">
+        <h2 id="studio-titolo">Lo studio</h2>
+        <address>
+          presso {s.presso}<br />
+          {s.via}<br />
+          {s.cap} {s.citta} ({s.quartiere})
+        </address>
+        <a class="btn btn--contorno studio__mappa" href={s.mappaLink} rel="noopener">Apri in Google Maps</a>
+        <p class="tenue studio__online">I colloqui si svolgono anche online, in videochiamata.</p>
+        <Picture
+          class="studio__foto"
+          src={fotoStanza}
+          alt="La stanza dei colloqui ad Acilia, con sedie rosa, un tavolino e quadri botanici alla parete"
+          formats={['avif', 'webp']}
+          fallbackFormat="jpg"
+          widths={[400, 640, 1000]}
+          sizes="(min-width: 64rem) 32rem, 92vw"
+        />
+      </section>
+    </div>
+
+    <!-- Modulo -->
+    <section class="contatti__modulo" aria-labelledby="modulo-titolo">
+      <h2 id="modulo-titolo">Scrivimi</h2>
+      <FormContatto />
+    </section>
+  </div>
+</Base>
+
+<style>
+  /* Base: telefono */
+  .apertura {
+    padding-block: clamp(1.5rem, 6vw, 4.5rem) 1.5rem;
+  }
+  .apertura__riga {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 1rem;
+    align-items: start;
+  }
+  .apertura h1 {
+    font-size: clamp(2.1rem, 1.4rem + 3.6vw, 3.8rem);
+  }
+  .apertura :global(.apertura__tratto) {
+    width: min(11rem, 70%);
+    height: 1.1rem;
+    margin: 0.9rem 0 1.25rem;
+  }
+  .apertura__lead {
+    grid-column: 1 / -1;
+    max-width: 34em;
+  }
+  .apertura__riga > div {
+    display: contents;
+  }
+  .apertura__riga h1,
+  .apertura__riga :global(.apertura__tratto) {
+    grid-column: 1;
+  }
+  .apertura :global(.apertura__foto) {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    width: 5.5rem;
+    height: 5.5rem;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid var(--salvia);
+  }
+
+  .contatti {
+    display: grid;
+    gap: 3rem;
+    padding-bottom: var(--sezione);
+  }
+
+  /* Recapiti: righe grandi, tutta la riga è toccabile */
+  .recapiti {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-bottom: 1px solid var(--filetto);
+  }
+  .recapiti li {
+    border-top: 1px solid var(--filetto);
+  }
+  .recapiti a {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    padding-block: 0.85rem;
+    text-decoration: none;
+    color: var(--testo);
+  }
+  .recapiti__etichetta {
+    font-size: var(--t-piccolo);
+    color: var(--testo-tenue);
+  }
+  .recapiti__valore {
+    font-family: var(--titoli);
+    font-size: 1.3rem;
+    color: var(--terracotta-scuro);
+    overflow-wrap: anywhere;
+  }
+  .recapiti a:hover .recapiti__valore {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+  }
+
+  /* Studio */
+  .studio {
+    margin-top: 2.5rem;
+  }
+  .studio h2 {
+    font-size: var(--t-l);
+    margin-bottom: 0.75rem;
+  }
+  address {
+    font-style: normal;
+  }
+  .studio__mappa {
+    margin-top: 1.1rem;
+  }
+  .studio__online {
+    margin-top: 1rem;
+  }
+  .studio :global(.studio__foto img),
+  .studio :global(img.studio__foto) {
+    margin-top: 1.5rem;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border-radius: var(--raggio);
+  }
+
+  /* Modulo */
+  .contatti__modulo h2 {
+    font-size: var(--t-l);
+    margin-bottom: 1rem;
+  }
+
+  /* Desktop: recapiti e studio a sinistra, modulo a destra */
+  @media (min-width: 64rem) {
+    .apertura :global(.apertura__foto) {
+      width: 8.5rem;
+      height: 8.5rem;
+    }
+    .contatti {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: clamp(3rem, 6vw, 6rem);
+      align-items: start;
+    }
+    .contatti__modulo {
+      padding: 2rem;
+      background: #fff;
+      border: 1px solid var(--filetto);
+      border-radius: var(--raggio);
+    }
+  }
+</style>

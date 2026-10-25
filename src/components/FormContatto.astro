@@ -1,0 +1,243 @@
+---
+import { url } from '../lib/url';
+// Modulo di contatto: solo i campi indicati in CLAUDE.md, nessuna domanda clinica.
+// Funziona anche senza JavaScript (invio classico); con JavaScript valida i campi
+// e mostra l'esito senza lasciare la pagina.
+import { sito } from '../data/sito';
+---
+<form class="modulo" method="post" action={url('/api/contatto')} novalidate>
+  <p class="modulo__avviso" id="avviso-dati">
+    Non inserire informazioni sanitarie o personali sensibili: basta una breve richiesta,
+    il resto se ne parlerà a voce.
+  </p>
+
+  <div class="campo">
+    <label for="nome">Nome e cognome</label>
+    <input id="nome" name="nome" type="text" autocomplete="name" required maxlength="100"
+      aria-describedby="nome-errore" />
+    <p class="campo__errore" id="nome-errore" hidden>Inserisci il tuo nome.</p>
+  </div>
+
+  <div class="campo">
+    <label for="contatto">Email o telefono</label>
+    <input id="contatto" name="contatto" type="text" inputmode="email" autocomplete="email"
+      required maxlength="150" aria-describedby="contatto-aiuto contatto-errore" />
+    <p class="campo__aiuto" id="contatto-aiuto">Il recapito a cui preferisci ricevere la risposta.</p>
+    <p class="campo__errore" id="contatto-errore" hidden>Inserisci un indirizzo email o un numero di telefono validi.</p>
+  </div>
+
+  <div class="campo">
+    <label for="messaggio">Messaggio</label>
+    <textarea id="messaggio" name="messaggio" rows="5" required maxlength="3000"
+      aria-describedby="avviso-dati messaggio-errore"></textarea>
+    <p class="campo__errore" id="messaggio-errore" hidden>Scrivi un breve messaggio.</p>
+  </div>
+
+  <!-- Campo nascosto anti-spam: le persone non lo vedono e non lo compilano -->
+  <div class="modulo__trappola" aria-hidden="true">
+    <label for="sito_web">Lascia vuoto questo campo</label>
+    <input id="sito_web" name="sito_web" type="text" tabindex="-1" autocomplete="off" />
+  </div>
+
+  <div class="campo campo--consenso">
+    <input id="consenso" name="consenso" type="checkbox" value="si" required
+      aria-describedby="consenso-errore" />
+    <label for="consenso">
+      Ho letto l'<a href={url('/privacy-policy/')}>informativa sulla privacy</a> e acconsento al
+      trattamento dei miei dati per ricevere una risposta.
+    </label>
+    <p class="campo__errore" id="consenso-errore" hidden>Per inviare il messaggio serve il consenso al trattamento dei dati.</p>
+  </div>
+
+  <div class="cf-turnstile" data-sitekey={sito.turnstileSiteKey} data-language="it" data-theme="light" data-size="flexible"></div>
+
+  <button class="btn modulo__invia" type="submit">Invia il messaggio</button>
+
+  <p class="modulo__esito" role="status" aria-live="polite"></p>
+</form>
+
+<script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+
+<script>
+  import { sito } from '../data/sito';
+
+  const form = document.querySelector<HTMLFormElement>('.modulo');
+  const esito = form?.querySelector<HTMLParagraphElement>('.modulo__esito');
+  const emailValida = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+  const telefonoValido = /^\+?[\d\s./-]{8,20}$/;
+
+  function segnala(campo: HTMLInputElement | HTMLTextAreaElement, errato: boolean) {
+    const errore = document.getElementById(`${campo.id}-errore`);
+    campo.setAttribute('aria-invalid', String(errato));
+    if (errore) errore.hidden = !errato;
+    return !errato;
+  }
+
+  function valida(f: HTMLFormElement) {
+    const nome = f.elements.namedItem('nome') as HTMLInputElement;
+    const contatto = f.elements.namedItem('contatto') as HTMLInputElement;
+    const messaggio = f.elements.namedItem('messaggio') as HTMLTextAreaElement;
+    const consenso = f.elements.namedItem('consenso') as HTMLInputElement;
+    const c = contatto.value.trim();
+    const risultati = [
+      segnala(nome, nome.value.trim().length < 2),
+      segnala(contatto, !(emailValida.test(c) || telefonoValido.test(c))),
+      segnala(messaggio, messaggio.value.trim().length < 5),
+      segnala(consenso, !consenso.checked),
+    ];
+    const primoErrato = f.querySelector<HTMLElement>('[aria-invalid="true"]');
+    primoErrato?.focus();
+    return risultati.every(Boolean);
+  }
+
+  if (form && esito) {
+    // Toglie l'errore appena il campo viene corretto
+    form.addEventListener('input', (e) => {
+      const campo = e.target as HTMLInputElement;
+      if (campo.getAttribute('aria-invalid') === 'true') segnala(campo, false);
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      esito.textContent = '';
+      esito.className = 'modulo__esito';
+      if (!valida(form)) return;
+
+      const pulsante = form.querySelector<HTMLButtonElement>('.modulo__invia')!;
+      pulsante.disabled = true;
+      pulsante.textContent = 'Invio in corso…';
+      try {
+        const risposta = await fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { Accept: 'application/json' },
+        });
+        const dati = await risposta.json().catch(() => ({}));
+        if (!risposta.ok) throw new Error(dati.errore || '');
+        form.reset();
+        form.innerHTML = `<p class="modulo__grazie">Messaggio inviato. Ti risponderò al più presto al recapito che hai indicato.</p>`;
+      } catch (err) {
+        const motivo = err instanceof Error && err.message ? `${err.message} ` : '';
+        esito.classList.add('modulo__esito--errore');
+        esito.textContent = `${motivo}Il messaggio non è stato inviato. Riprova tra qualche minuto oppure telefona al ${sito.telefono}.`;
+        pulsante.disabled = false;
+        pulsante.textContent = 'Invia il messaggio';
+        (window as any).turnstile?.reset();
+      }
+    });
+  }
+
+  // Esito dell'invio senza JavaScript (la funzione reindirizza a ?inviato=1)
+  if (new URLSearchParams(location.search).get('inviato') === '1' && form) {
+    form.innerHTML = `<p class="modulo__grazie">Messaggio inviato. Ti risponderò al più presto al recapito che hai indicato.</p>`;
+  }
+</script>
+
+<style>
+  .modulo {
+    display: grid;
+    gap: 1.25rem;
+  }
+  .modulo__avviso {
+    padding: 0.9rem 1rem;
+    background: var(--sabbia-chiara);
+    border-left: 3px solid var(--terracotta);
+    border-radius: 0;
+    font-size: var(--t-piccolo);
+  }
+  .campo {
+    display: grid;
+    gap: 0.4rem;
+  }
+  .campo label {
+    font-weight: 600;
+  }
+  .campo input[type='text'],
+  .campo textarea {
+    width: 100%;
+    min-height: 3rem;
+    padding: 0.7rem 0.9rem;
+    font: inherit;
+    font-size: 1.0625rem;
+    color: var(--testo);
+    background: #fff;
+    border: 1.5px solid var(--filetto);
+    border-radius: 0.6rem;
+  }
+  .campo textarea {
+    resize: vertical;
+    min-height: 8rem;
+  }
+  .campo input:focus-visible,
+  .campo textarea:focus-visible {
+    border-color: var(--testo);
+  }
+  .campo input[aria-invalid='true'],
+  .campo textarea[aria-invalid='true'] {
+    border-color: #a3322a;
+  }
+  .campo__aiuto {
+    font-size: var(--t-piccolo);
+    color: var(--testo-tenue);
+  }
+  .campo__errore {
+    font-size: var(--t-piccolo);
+    font-weight: 600;
+    color: #a3322a;
+  }
+  .campo--consenso {
+    grid-template-columns: auto 1fr;
+    align-items: start;
+    column-gap: 0.75rem;
+  }
+  .campo--consenso input {
+    width: 1.35rem;
+    height: 1.35rem;
+    margin-top: 0.2rem;
+    accent-color: var(--terracotta-scuro);
+  }
+  .campo--consenso label {
+    font-weight: 400;
+    font-size: 1rem;
+  }
+  .campo--consenso .campo__errore {
+    grid-column: 1 / -1;
+  }
+  .modulo__trappola {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+  .modulo__invia {
+    width: 100%;
+  }
+  .modulo__invia:disabled {
+    opacity: 0.7;
+    cursor: wait;
+  }
+  .modulo__esito:empty {
+    display: none;
+  }
+  .modulo__esito--errore {
+    padding: 0.9rem 1rem;
+    border: 1.5px solid #a3322a;
+    border-radius: 0.6rem;
+    color: #a3322a;
+    font-weight: 600;
+  }
+  .modulo :global(.modulo__grazie) {
+    padding: 1.25rem;
+    background: var(--sabbia-chiara);
+    border-radius: var(--raggio);
+    font-family: var(--titoli);
+    font-size: var(--t-m);
+  }
+  @media (min-width: 40rem) {
+    .modulo__invia {
+      width: auto;
+      justify-self: start;
+    }
+  }
+</style>

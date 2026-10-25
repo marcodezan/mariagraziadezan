@@ -1,0 +1,75 @@
+---
+// Il tratto a matita: l'unico elemento decorativo del sito.
+// - sottolinea: sotto i titoli principali (si disegna una volta se `disegna`)
+// - cerchio: attorno alla voce di menu attiva o ai numeri dei passi
+interface Props {
+  forma?: 'sottolinea' | 'cerchio';
+  disegna?: boolean;
+  class?: string;
+}
+const { forma = 'sottolinea', disegna = false, class: classe = '' } = Astro.props;
+const id = `grana-${Math.random().toString(36).slice(2, 8)}`;
+const forme = {
+  sottolinea: {
+    viewBox: '0 0 340 26',
+    d: 'M4 17 C 46 9, 78 21, 122 15 S 196 6, 236 12 S 302 19, 336 9',
+    d2: 'M14 19 C 60 13, 98 21, 150 16 S 236 11, 290 15',
+  },
+  cerchio: {
+    viewBox: '0 0 140 60',
+    d: 'M78 6 C 40 3, 8 14, 6 31 C 4 49, 46 57, 82 54 C 118 51, 136 39, 133 24 C 130 10, 96 4, 58 9',
+    d2: '',
+  },
+};
+const f = forme[forma];
+---
+<svg
+  class:list={['tratto', `tratto--${forma}`, { 'tratto--disegna': disegna }, classe]}
+  viewBox={f.viewBox}
+  preserveAspectRatio="none"
+  aria-hidden="true"
+  focusable="false"
+>
+  <defs>
+    <filter id={id} x="-5%" y="-30%" width="110%" height="160%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" seed="4" />
+      <feDisplacementMap in="SourceGraphic" scale="1.6" />
+    </filter>
+  </defs>
+  <g filter={`url(#${id})`}>
+    <path d={f.d} />
+    {f.d2 && <path class="tratto__ripasso" d={f.d2} />}
+  </g>
+</svg>
+
+<style>
+  .tratto {
+    display: block;
+    overflow: visible;
+    fill: none;
+    stroke: var(--terracotta);
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .tratto path {
+    stroke-width: 3;
+    vector-effect: non-scaling-stroke;
+  }
+  .tratto--cerchio path {
+    stroke-width: 1.6;
+  }
+  .tratto__ripasso {
+    stroke-width: 1.4 !important;
+    opacity: 0.55;
+  }
+  /* Il tratto si "disegna" da sinistra a destra, una sola volta */
+  @media (prefers-reduced-motion: no-preference) {
+    .tratto--disegna {
+      clip-path: inset(-50% 100% -50% 0);
+      animation: disegna 1.2s cubic-bezier(0.55, 0.1, 0.3, 1) 0.35s forwards;
+    }
+  }
+  @keyframes disegna {
+    to { clip-path: inset(-50% 0 -50% 0); }
+  }
+</style>

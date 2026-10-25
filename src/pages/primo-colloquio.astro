@@ -1,0 +1,230 @@
+---
+import Base from '../layouts/Base.astro';
+import Tratto from '../components/Tratto.astro';
+import PassiColloquio from '../components/PassiColloquio.astro';
+import CtaFinale from '../components/CtaFinale.astro';
+import { Picture } from 'astro:assets';
+import { sito } from '../data/sito';
+import fotoStudio from '../assets/foto/studio-psicologa-acilia-roma.jpg';
+
+const s = sito.studio;
+---
+<Base
+  titolo="Il primo colloquio | Psicologa ad Acilia e online | Dott.ssa Maria Grazia De Zan"
+  descrizione="Cosa aspettarsi dal primo colloquio psicologico: come funziona, in studio ad Acilia o online, durata degli incontri e costi."
+>
+  <section class="apertura">
+    <div class="contenitore">
+      <h1>Il primo colloquio</h1>
+      <Tratto class="apertura__tratto" />
+      <p class="apertura__lead">
+        Il primo colloquio è un incontro di conoscenza: serve a comprendere la tua
+        richiesta e a valutare insieme se e come proseguire.
+      </p>
+    </div>
+  </section>
+
+  <!-- Cosa aspettarsi -->
+  <section class="sezione sezione--stretta" aria-labelledby="aspettarsi-titolo">
+    <div class="contenitore due-colonne">
+      <h2 id="aspettarsi-titolo">Cosa aspettarsi</h2>
+      <div class="misura">
+        <p>
+          Durante il primo incontro potrai raccontare ciò che ti ha portato a chiedere un
+          colloquio, con i tuoi tempi. Non è necessario prepararsi né sapere già cosa
+          dire: il colloquio viene guidato con attenzione e senza giudizio.
+        </p>
+        <p>
+          Al termine si condivide una prima lettura della situazione e, se lo ritieni
+          utile, si definiscono insieme obiettivi, frequenza e modalità del percorso.
+          Tutto ciò che emerge è tutelato dal segreto professionale.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- I passi -->
+  <section class="sezione sezione--stretta" aria-labelledby="passi-titolo">
+    <div class="contenitore">
+      <h2 id="passi-titolo" class="passi-titolo">Come iniziare</h2>
+      <PassiColloquio />
+    </div>
+  </section>
+
+  <!-- In studio o online -->
+  <section class="sezione luogo" aria-labelledby="luogo-titolo">
+    <div class="contenitore luogo__griglia">
+      <div>
+        <h2 id="luogo-titolo">In studio o online</h2>
+        <div class="luogo__voce">
+          <h3>Nello studio ad {s.quartiere}</h3>
+          <p>
+            Lo studio si trova presso {s.presso}, in {s.via}, {s.cap} {s.citta}.
+            Si riceve su appuntamento.
+          </p>
+          <a href={s.mappaLink} rel="noopener">Apri in Google Maps</a>
+        </div>
+        <div class="luogo__voce">
+          <h3>Online</h3>
+          <p>
+            Il colloquio può svolgersi anche in videochiamata, con la stessa cura e la
+            stessa riservatezza. È sufficiente una connessione stabile e un luogo
+            tranquillo in cui parlare liberamente.
+          </p>
+        </div>
+      </div>
+      <figure class="luogo__foto">
+        <Picture
+          src={fotoStudio}
+          alt="La stanza dei colloqui ad Acilia: tre sedie rosa attorno a un tavolino e quadri botanici alla parete"
+          formats={['avif', 'webp']}
+          fallbackFormat="jpg"
+          widths={[400, 640, 900]}
+          sizes="(min-width: 64rem) 26rem, 92vw"
+        />
+      </figure>
+    </div>
+  </section>
+
+  <!-- Durata e costi -->
+  <section class="sezione" aria-labelledby="costi-titolo">
+    <div class="contenitore due-colonne">
+      <h2 id="costi-titolo">Durata e costi</h2>
+      <div class="misura">
+        <p>
+          Ogni incontro dura {sito.incontro.durataMinuti} minuti. La frequenza viene
+          concordata insieme, in base alle esigenze e agli obiettivi del percorso.
+        </p>
+        <dl class="tariffe">
+          {sito.tariffe.map((t) => (
+            <div class="tariffe__riga">
+              <dt>{t.voce}</dt>
+              <dd>{t.prezzo} €</dd>
+            </div>
+          ))}
+        </dl>
+        <p class="tenue tariffe__nota">Costo per singolo incontro di {sito.incontro.durataMinuti} minuti.</p>
+        <p class="minori">
+          Per i minorenni il percorso richiede il consenso dei genitori o di chi esercita
+          la responsabilità genitoriale.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <CtaFinale />
+</Base>
+
+<style>
+  /* Base: telefono */
+  .apertura {
+    padding-block: clamp(1.5rem, 6vw, 4.5rem) 0.5rem;
+  }
+  .apertura h1 {
+    font-size: clamp(2.1rem, 1.4rem + 3.6vw, 3.8rem);
+  }
+  .apertura :global(.apertura__tratto) {
+    width: min(14rem, 60%);
+    height: 1.1rem;
+    margin: 0.9rem 0 1.25rem;
+  }
+  .apertura__lead {
+    font-size: clamp(1.125rem, 1rem + 0.4vw, 1.3rem);
+    max-width: 32em;
+  }
+  .sezione--stretta {
+    padding-bottom: 0;
+  }
+  .passi-titolo {
+    margin-bottom: 2rem;
+  }
+
+  /* In studio o online */
+  .luogo {
+    background: var(--sabbia);
+  }
+  .luogo a {
+    color: var(--terracotta-profondo);
+  }
+  .luogo__griglia {
+    display: grid;
+    gap: 2rem;
+  }
+  .luogo h2 {
+    margin-bottom: 0.5rem;
+  }
+  .luogo__voce {
+    padding-top: 1.25rem;
+    margin-top: 1.25rem;
+    border-top: 1px solid rgb(44 74 110 / 0.2);
+    max-width: var(--misura);
+  }
+  .luogo__voce h3 {
+    font-size: var(--t-m);
+    margin-bottom: 0.5rem;
+  }
+  .luogo__voce a {
+    display: inline-block;
+    margin-top: 0.6rem;
+    min-height: 2.75rem;
+    line-height: 2.75rem;
+  }
+  .luogo__foto {
+    margin: 0;
+  }
+  .luogo__foto :global(img) {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    object-position: 50% 62%;
+    border-radius: var(--raggio);
+  }
+
+  /* Tariffe */
+  .tariffe {
+    margin: 1.75rem 0 0;
+    border-top: 1px solid var(--filetto);
+  }
+  .tariffe__riga {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    padding-block: 0.9rem;
+    border-bottom: 1px solid var(--filetto);
+  }
+  .tariffe dt {
+    font-weight: 600;
+  }
+  .tariffe dd {
+    margin: 0;
+    font-family: var(--titoli);
+    font-size: var(--t-m);
+    white-space: nowrap;
+  }
+  .tariffe__nota {
+    margin-top: 0.75rem;
+    font-size: var(--t-piccolo);
+  }
+  .minori {
+    margin-top: 2rem;
+    padding: 0.9rem 1rem;
+    background: var(--sabbia-chiara);
+    border-radius: var(--raggio);
+    font-size: var(--t-piccolo);
+    color: var(--testo-tenue);
+  }
+
+  /* Desktop */
+  @media (min-width: 64rem) {
+    .luogo__griglia {
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+      gap: clamp(3rem, 7vw, 7rem);
+      align-items: center;
+    }
+    .luogo__foto :global(img) {
+      aspect-ratio: 4 / 5;
+      object-position: 50% 60%;
+    }
+  }
+</style>

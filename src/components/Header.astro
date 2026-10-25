@@ -1,0 +1,226 @@
+---
+import { url } from '../lib/url';
+import { sito, navigazione } from '../data/sito';
+import Tratto from './Tratto.astro';
+
+const percorso = Astro.url.pathname.replace(/\/?$/, '/');
+---
+<header class="testata">
+  <div class="contenitore testata__riga">
+    <a class="marchio" href={url('/')} aria-label={`${sito.nomeCompleto}, ${sito.titolo}: torna alla home`}>
+      <span class="marchio__nome">{sito.nome}</span>
+      <span class="marchio__ruolo">{sito.titolo} ad {sito.studio.quartiere} e online</span>
+    </a>
+
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu-principale">
+      <span class="menu-btn__linee" aria-hidden="true"></span>
+      Menu
+    </button>
+
+    <nav id="menu-principale" class="menu" aria-label="Principale">
+      <ul>
+        {navigazione.map(({ href, etichetta }) => {
+          const attiva = percorso === url(href);
+          return (
+            <li>
+              <a href={url(href)} aria-current={attiva ? 'page' : undefined}>
+                {etichetta}
+                {attiva && <Tratto forma="cerchio" class="menu__cerchio" />}
+              </a>
+            </li>
+          );
+        })}
+      </ul>
+      <a class="btn menu__cta" href={url('/contatti/')}>Prenota un colloquio</a>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const btn = document.querySelector<HTMLButtonElement>('.menu-btn');
+  const menu = document.getElementById('menu-principale');
+  if (btn && menu) {
+    document.documentElement.classList.add('js');
+    btn.addEventListener('click', () => {
+      const aperto = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', String(!aperto));
+      menu.toggleAttribute('data-aperto', !aperto);
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && btn.getAttribute('aria-expanded') === 'true') {
+        btn.setAttribute('aria-expanded', 'false');
+        menu.removeAttribute('data-aperto');
+        btn.focus();
+      }
+    });
+  }
+</script>
+
+<style>
+  .testata {
+    padding-block: 1.25rem;
+    border-bottom: 1px solid var(--filetto);
+  }
+  .testata__riga {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .marchio {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: var(--testo);
+    line-height: 1.15;
+  }
+  .marchio:hover {
+    color: var(--testo);
+  }
+  .marchio__nome {
+    font-family: var(--titoli);
+    font-size: 1.4rem;
+    font-variation-settings: 'SOFT' 100, 'WONK' 1;
+    letter-spacing: -0.01em;
+  }
+  .marchio__ruolo {
+    font-size: var(--t-piccolo);
+    color: var(--testo-tenue);
+    margin-top: 0.2rem;
+  }
+
+  /* Base: telefono. Pulsante Menu e voci a tutta larghezza. */
+  .menu-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    min-height: 2.75rem;
+    padding: 0.4rem 1rem;
+    background: transparent;
+    border: 1.5px solid var(--testo);
+    border-radius: 999px;
+    font: 600 1rem var(--corpo);
+    color: var(--testo);
+    cursor: pointer;
+  }
+  :global(html:not(.js)) .menu-btn {
+    display: none;
+  }
+  .menu-btn__linee,
+  .menu-btn__linee::before {
+    display: block;
+    width: 1.1rem;
+    height: 1.5px;
+    background: currentColor;
+    position: relative;
+    transition: transform 0.2s ease;
+  }
+  .menu-btn__linee::before {
+    content: '';
+    position: absolute;
+    top: 6px;
+  }
+  .menu-btn__linee {
+    transform: translateY(-3px);
+  }
+  .menu-btn[aria-expanded='true'] .menu-btn__linee {
+    transform: translateY(0) rotate(45deg);
+  }
+  .menu-btn[aria-expanded='true'] .menu-btn__linee::before {
+    top: 0;
+    transform: rotate(-90deg);
+  }
+
+  .menu {
+    flex-basis: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  :global(html.js) .menu:not([data-aperto]) {
+    display: none;
+  }
+  .menu ul {
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .menu ul li + li {
+    border-top: 1px solid var(--filetto);
+  }
+  .menu ul a {
+    position: relative;
+    display: block;
+    padding-block: 0.9rem;
+    color: var(--testo);
+    text-decoration: none;
+    font-family: var(--titoli);
+    font-size: var(--t-m);
+  }
+  .menu ul a:hover,
+  .menu ul a[aria-current='page'] {
+    color: var(--terracotta-scuro);
+  }
+  .menu ul a :global(.menu__cerchio) {
+    display: none;
+  }
+  .menu__cta {
+    align-self: flex-start;
+    min-height: 2.75rem;
+    padding-inline: 1.2rem;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  /* Desktop: menu in linea, voce attiva cerchiata a matita */
+  @media (min-width: 64rem) {
+    .menu-btn {
+      display: none;
+    }
+    .menu,
+    :global(html.js) .menu:not([data-aperto]) {
+      flex-basis: auto;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 2rem;
+    }
+    .menu ul {
+      flex-direction: row;
+      gap: 1.6rem;
+    }
+    .menu ul li + li {
+      border-top: 0;
+    }
+    .menu ul a {
+      display: inline-block;
+      padding-block: 0.4rem;
+      font-family: var(--corpo);
+      font-size: 1.02rem;
+      white-space: nowrap;
+    }
+    .menu ul a[aria-current='page'] {
+      color: var(--testo);
+    }
+    .menu ul a :global(.menu__cerchio) {
+      display: block;
+      position: absolute;
+      inset: -0.35rem -0.9rem;
+      width: calc(100% + 1.8rem);
+      height: calc(100% + 0.7rem);
+      pointer-events: none;
+    }
+    .menu__cta {
+      display: none;
+      margin: 0;
+    }
+  }
+  @media (min-width: 75rem) {
+    .menu__cta {
+      display: inline-flex;
+    }
+  }
+</style>

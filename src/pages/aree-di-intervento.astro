@@ -1,0 +1,160 @@
+---
+import Base from '../layouts/Base.astro';
+import Tratto from '../components/Tratto.astro';
+import CtaFinale from '../components/CtaFinale.astro';
+import { aree } from '../data/sito';
+
+// Testi delle aree: brevi, pensati per la lettura da telefono.
+// Nessuna promessa di risultati; i termini tecnici sono spiegati.
+const testi: Record<string, string[]> = {
+  genitorialita: [
+    'Essere genitori comporta passaggi complessi: l’ingresso a scuola, l’adolescenza, una separazione, un cambiamento nella famiglia. Il sostegno alla genitorialità offre uno spazio di confronto per comprendere ciò che sta accadendo nella relazione con i figli.',
+    'Insieme si individuano le modalità educative più adatte alla fase che la famiglia sta attraversando, tenendo conto anche del contesto scolastico in cui i figli crescono.',
+  ],
+  'scuola-dsa-adhd': [
+    'I DSA, disturbi specifici dell’apprendimento, riguardano abilità come la lettura, la scrittura e il calcolo: ne fanno parte la dislessia, la disortografia, la disgrafia e la discalculia. L’ADHD è un disturbo del neurosviluppo che interessa l’attenzione, l’impulsività e il livello di attività.',
+    'Offro orientamento e supporto a ragazzi e genitori e favorisco il dialogo con gli insegnanti, per costruire strategie condivise. Il percorso non sostituisce la valutazione diagnostica, affidata a équipe specializzate, ma può accompagnare la famiglia prima e dopo.',
+  ],
+  adolescenza: [
+    'L’adolescenza è una fase di grandi trasformazioni, in cui possono emergere difficoltà emotive, chiusura, conflitti in famiglia o un calo nel rendimento scolastico.',
+    'Ai ragazzi offro uno spazio di ascolto riservato e, quando è utile, coinvolgo anche i genitori. Mi occupo inoltre di prevenzione dei comportamenti a rischio, ambito in cui ho maturato una lunga esperienza.',
+  ],
+  'coppia-famiglia': [
+    'Le difficoltà di una coppia o di una famiglia raramente dipendono da una sola persona. Comunicazione che si inceppa, conflitti ricorrenti, momenti di crisi o di cambiamento possono essere affrontati guardando alle relazioni nel loro insieme.',
+    'Secondo l’approccio sistemico-relazionale, gli incontri sono l’occasione per comprendere le dinamiche in atto e cercare insieme modalità di dialogo più funzionali.',
+  ],
+  umore: [
+    'Tristezza persistente, perdita di interesse, calo di energia, irritabilità o sbalzi d’umore possono incidere in modo significativo sulla vita quotidiana, sul lavoro e sulle relazioni.',
+    'Il colloquio psicologico offre uno spazio per dare un nome a ciò che si sta vivendo, comprenderne il significato e individuare le risorse su cui contare. Quando necessario, posso indicare un confronto con altri professionisti, come il medico di base o lo psichiatra.',
+  ],
+};
+---
+<Base
+  titolo="Aree di intervento | Psicologa ad Acilia e online | Dott.ssa Maria Grazia De Zan"
+  descrizione="Sostegno alla genitorialità, DSA e ADHD, adolescenza, coppia e famiglia, disturbi dell'umore. Colloqui psicologici ad Acilia (Roma) e online."
+>
+  <section class="apertura">
+    <div class="contenitore">
+      <h1>Aree di intervento</h1>
+      <Tratto class="apertura__tratto" />
+      <p class="apertura__lead">
+        Lavoro con adolescenti, adulti, coppie e famiglie. Queste sono le aree in cui
+        opero più spesso, sempre con uno sguardo attento alle relazioni.
+      </p>
+    </div>
+  </section>
+
+  <div class="contenitore aree">
+    <nav class="indice" aria-label="Aree in questa pagina">
+      <ul>
+        {aree.map((a) => <li><a href={`#${a.id}`}>{a.titolo}</a></li>)}
+      </ul>
+    </nav>
+
+    <div class="aree__testi">
+      {aree.map((a) => (
+        <section id={a.id} class="area" aria-labelledby={`${a.id}-titolo`}>
+          <h2 id={`${a.id}-titolo`}>{a.titolo}</h2>
+          {testi[a.id].map((t) => <p>{t}</p>)}
+          {a.id === 'adolescenza' && (
+            <p class="area__nota">
+              Per i minorenni il percorso richiede il consenso dei genitori o di chi
+              esercita la responsabilità genitoriale.
+            </p>
+          )}
+        </section>
+      ))}
+    </div>
+  </div>
+
+  <CtaFinale />
+</Base>
+
+<style>
+  /* Base: telefono */
+  .apertura {
+    padding-block: clamp(1.5rem, 6vw, 4.5rem) 1.5rem;
+  }
+  .apertura h1 {
+    font-size: clamp(2.1rem, 1.4rem + 3.6vw, 3.8rem);
+  }
+  .apertura :global(.apertura__tratto) {
+    width: min(14rem, 60%);
+    height: 1.1rem;
+    margin: 0.9rem 0 1.25rem;
+  }
+  .apertura__lead {
+    max-width: 34em;
+  }
+
+  /* Indice: link grandi e facili da toccare */
+  .indice ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-bottom: 1px solid var(--filetto);
+  }
+  .indice li {
+    border-top: 1px solid var(--filetto);
+  }
+  .indice a {
+    display: flex;
+    align-items: center;
+    min-height: 3rem;
+    padding-block: 0.5rem;
+    font-family: var(--titoli);
+    font-size: 1.2rem;
+    color: var(--testo);
+    text-decoration: none;
+  }
+  .indice a:hover {
+    color: var(--terracotta-scuro);
+  }
+
+  .aree__testi {
+    margin-top: 1rem;
+  }
+  .area {
+    padding-block: 2.25rem;
+    max-width: var(--misura);
+  }
+  .area + .area {
+    border-top: 1px solid var(--filetto);
+  }
+  .area h2 {
+    font-size: var(--t-l);
+    margin-bottom: 0.9rem;
+  }
+  .area__nota {
+    margin-top: 1rem;
+    padding: 0.9rem 1rem;
+    background: var(--sabbia-chiara);
+    border-radius: var(--raggio);
+    font-size: var(--t-piccolo);
+    color: var(--testo-tenue);
+  }
+
+  /* Desktop: indice fisso a sinistra, testi a destra */
+  @media (min-width: 64rem) {
+    .aree {
+      display: grid;
+      grid-template-columns: minmax(0, 0.6fr) minmax(0, 1.4fr);
+      gap: clamp(3rem, 6vw, 6rem);
+      align-items: start;
+    }
+    .indice {
+      position: sticky;
+      top: 2rem;
+      margin-top: 2.25rem;
+    }
+    .indice a {
+      font-size: 1.1rem;
+    }
+    .aree__testi {
+      margin-top: 0;
+    }
+    .area h2 {
+      font-size: var(--t-xl);
+    }
+  }
+</style>

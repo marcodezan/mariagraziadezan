@@ -1,0 +1,87 @@
+---
+import Tratto from './Tratto.astro';
+
+const passi = [
+  {
+    titolo: 'Il primo contatto',
+    testo: 'Puoi contattarmi per telefono, WhatsApp, email o tramite il modulo del sito per fissare un appuntamento.',
+  },
+  {
+    titolo: 'Il primo colloquio',
+    testo: 'In studio ad Acilia oppure online: un incontro dedicato ad ascoltare la tua richiesta e a conoscerci.',
+  },
+  {
+    titolo: 'La definizione del percorso',
+    testo: 'Valutiamo insieme se e come proseguire, concordando obiettivi, frequenza e modalità degli incontri.',
+  },
+];
+---
+<ol class="passi">
+  {passi.map((p, i) => (
+    <li class="passo">
+      <span class="passo__numero" aria-hidden="true">
+        {i + 1}
+        <Tratto forma="cerchio" class="passo__cerchio" />
+      </span>
+      <h3 class="passo__titolo">{p.titolo}</h3>
+      <p class="tenue">{p.testo}</p>
+    </li>
+  ))}
+</ol>
+
+<style>
+  .passi {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 2.5rem;
+    counter-reset: none;
+  }
+  @media (min-width: 48rem) {
+    .passi {
+      grid-template-columns: repeat(3, 1fr);
+      gap: clamp(1.5rem, 4vw, 3.5rem);
+    }
+  }
+  .passo {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    column-gap: 1.25rem;
+    align-items: baseline;
+  }
+  @media (min-width: 48rem) {
+    .passo {
+      grid-template-columns: 1fr;
+    }
+  }
+  .passo__numero {
+    position: relative;
+    grid-row: span 2;
+    display: inline-grid;
+    place-items: center;
+    width: 3.4rem;
+    height: 2.6rem;
+    font-family: var(--titoli);
+    font-size: var(--t-l);
+    font-variation-settings: 'SOFT' 100, 'WONK' 1;
+    color: var(--terracotta-scuro);
+    line-height: 1;
+  }
+  @media (min-width: 48rem) {
+    .passo__numero {
+      grid-row: auto;
+      margin-bottom: 1rem;
+    }
+  }
+  .passo__numero :global(.passo__cerchio) {
+    position: absolute;
+    inset: -0.2rem -0.4rem;
+    width: calc(100% + 0.8rem);
+    height: calc(100% + 0.4rem);
+  }
+  .passo__titolo {
+    font-size: var(--t-m);
+    margin-bottom: 0.4rem;
+  }
+</style>

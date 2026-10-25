@@ -1,0 +1,337 @@
+---
+import { url } from '../lib/url';
+import Base from '../layouts/Base.astro';
+import Tratto from '../components/Tratto.astro';
+import RitrattoArco from '../components/RitrattoArco.astro';
+import PassiColloquio from '../components/PassiColloquio.astro';
+import CtaFinale from '../components/CtaFinale.astro';
+import { Picture } from 'astro:assets';
+import { sito, aree } from '../data/sito';
+import ritratto from '../assets/foto/maria-grazia-de-zan-psicologa-colloquio.jpg';
+import fotoStudio from '../assets/foto/studio-psicologa-acilia-diplomi.jpg';
+
+const destinatari = [
+  { nome: 'Adolescenti', testo: 'Difficoltà emotive, scolastiche e relazionali legate alla crescita, a volte difficili da esprimere a parole.' },
+  { nome: 'Adulti', testo: 'Periodi di umore basso, stanchezza emotiva, fasi di cambiamento o di scelta vissute con difficoltà.' },
+  { nome: 'Coppie', testo: 'Difficoltà di comunicazione, conflitti ricorrenti, momenti di crisi o di trasformazione della relazione.' },
+  { nome: 'Famiglie', testo: 'Cambiamenti, conflitti e fasi del ciclo di vita familiare che richiedono un nuovo equilibrio.' },
+];
+---
+<Base
+  titolo="Psicologa ad Acilia (Roma) e online | Dott.ssa Maria Grazia De Zan"
+  descrizione="Psicologa clinica con formazione sistemico-relazionale ad Acilia (Roma) e online. Colloqui per adolescenti, adulti, coppie e famiglie; sostegno alla genitorialità."
+>
+  <!-- Hero -->
+  <section class="hero">
+    <div class="contenitore hero__griglia">
+      <div class="hero__testo">
+        <h1>Ogni difficoltà ha una storia, da comprendere insieme.</h1>
+        <Tratto disegna class="hero__tratto" />
+        <p class="hero__intro">
+          Sono {sito.nome}, psicologa clinica con formazione sistemico-relazionale.
+          Ricevo adolescenti, adulti, coppie e famiglie nel mio studio
+          ad {sito.studio.quartiere} e online.
+        </p>
+        <div class="hero__azioni">
+          <a class="btn" href={url('/contatti/')}>Prenota un primo colloquio</a>
+          <p class="tenue">oppure telefona al <a href={sito.telefonoLink}>{sito.telefono}</a></p>
+        </div>
+        <p class="hero__albo">
+          Iscritta all'{sito.albo.ordine} dal {sito.albo.dal}, n. {sito.albo.numero}
+        </p>
+      </div>
+      <div class="hero__foto">
+        <RitrattoArco
+          src={ritratto}
+          alt="Maria Grazia De Zan, psicologa, seduta alla scrivania del suo studio"
+          priorita
+          posizione="52% 50%"
+          widths={[320, 480, 622]}
+          sizes="(min-width: 64rem) 28rem, (min-width: 40rem) 22rem, 70vw"
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- A chi mi rivolgo -->
+  <section class="sezione" aria-labelledby="chi-titolo">
+    <div class="contenitore">
+      <h2 id="chi-titolo">A chi mi rivolgo</h2>
+      <ul class="destinatari">
+        {destinatari.map((d) => (
+          <li>
+            <h3>{d.nome}</h3>
+            <p class="tenue">{d.testo}</p>
+          </li>
+        ))}
+      </ul>
+      <p class="destinatari__nota misura">
+        Offro inoltre consulenza ai <strong>genitori</strong> sulle questioni educative,
+        per comprendere ciò che un figlio sta vivendo e come sostenerlo.
+      </p>
+    </div>
+  </section>
+
+  <!-- Aree di intervento -->
+  <section class="sezione aree-sezione" aria-labelledby="aree-titolo">
+    <div class="contenitore aree">
+      <div class="aree__intro">
+        <h2 id="aree-titolo">Aree di intervento</h2>
+        <p class="tenue">
+          Gli ambiti in cui opero, maturati in oltre quindici anni di esperienza
+          clinica, educativa e familiare.
+        </p>
+        <a class="aree__tutte" href={url('/aree-di-intervento/')}>Tutte le aree di intervento</a>
+      </div>
+      <ul class="aree__elenco">
+        {aree.map((a) => (
+          <li>
+            <h3><a href={url(`/aree-di-intervento/#${a.id}`)}>{a.titolo}</a></h3>
+            <p class="tenue">{a.breve}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- Come lavoro -->
+  <section class="sezione lavoro" aria-labelledby="lavoro-titolo">
+    <div class="contenitore lavoro__griglia">
+      <div class="lavoro__testo">
+        <h2 id="lavoro-titolo">Come lavoro</h2>
+        <p>
+          Nell'approccio sistemico-relazionale, che orienta la mia formazione, una
+          difficoltà viene compresa anche alla luce delle relazioni in cui nasce: la
+          famiglia, la coppia, la scuola.
+        </p>
+        <p>
+          Il lavoro si fonda su un ascolto privo di giudizio e sulla valorizzazione
+          delle risorse già presenti, nella persona e nella sua rete di relazioni.
+        </p>
+        <ul class="lavoro__fatti">
+          <li>In studio ad {sito.studio.quartiere}, presso {sito.studio.presso}</li>
+          <li>Online, in videochiamata</li>
+          <li>Incontri di {sito.incontro.durataMinuti} minuti</li>
+        </ul>
+        <a href={url('/chi-sono/')}>Il mio percorso e la mia formazione</a>
+      </div>
+      <figure class="lavoro__foto">
+        <Picture
+          src={fotoStudio}
+          alt="Un angolo dello studio ad Acilia: i titoli di studio incorniciati alla parete, una libreria e le sedie per il colloquio"
+          formats={['avif', 'webp']}
+          fallbackFormat="jpg"
+          widths={[400, 640, 900]}
+          sizes="(min-width: 64rem) 26rem, 90vw"
+        />
+      </figure>
+    </div>
+  </section>
+
+  <!-- Il primo colloquio -->
+  <section class="sezione" aria-labelledby="passi-titolo">
+    <div class="contenitore">
+      <h2 id="passi-titolo" class="passi-titolo">Come iniziare</h2>
+      <PassiColloquio />
+      <p class="passi-link"><a href={url('/primo-colloquio/')}>Cosa aspettarsi dal primo colloquio</a></p>
+    </div>
+  </section>
+
+  <CtaFinale />
+</Base>
+
+<style>
+  /* Hero */
+  .hero {
+    padding-block: clamp(1.5rem, 6vw, 5.5rem) clamp(3rem, 7vw, 6.5rem);
+  }
+  .hero__griglia {
+    display: grid;
+    gap: 1.75rem;
+    align-items: center;
+  }
+  .hero__foto {
+    order: -1;
+    width: min(42%, 11rem);
+    margin-inline: auto 1rem;
+  }
+  @media (min-width: 64rem) {
+    .hero__griglia {
+      grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr);
+      gap: clamp(3rem, 6vw, 6rem);
+    }
+    .hero__foto {
+      order: 0;
+      width: 100%;
+      max-width: 28rem;
+      margin: 0;
+    }
+  }
+  .hero h1 {
+    max-width: 13em;
+  }
+  .hero :global(.hero__tratto) {
+    width: min(20rem, 70%);
+    height: 1.4rem;
+    margin: 1.1rem 0 1.6rem;
+  }
+  .hero__intro {
+    font-size: clamp(1.125rem, 1rem + 0.4vw, 1.3rem);
+    max-width: 32em;
+  }
+  .hero__azioni {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem 1.5rem;
+    margin-top: 2rem;
+  }
+  .hero__azioni p {
+    margin: 0;
+  }
+  .hero__albo {
+    margin-top: 2.25rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--filetto);
+    max-width: 32em;
+    font-size: var(--t-piccolo);
+    color: var(--testo-tenue);
+  }
+
+  /* A chi mi rivolgo */
+  .destinatari {
+    list-style: none;
+    margin: 2.5rem 0 0;
+    padding: 0;
+    display: grid;
+    gap: 0;
+  }
+  .destinatari li {
+    padding-block: 1.5rem;
+    border-top: 1px solid var(--filetto);
+  }
+  .destinatari h3 {
+    margin-bottom: 0.4rem;
+  }
+  @media (min-width: 48rem) {
+    .destinatari {
+      grid-template-columns: repeat(2, 1fr);
+      column-gap: clamp(2rem, 5vw, 5rem);
+    }
+  }
+  @media (min-width: 72rem) {
+    .destinatari {
+      grid-template-columns: repeat(4, 1fr);
+      column-gap: 2.5rem;
+    }
+  }
+  .destinatari__nota {
+    margin-top: 2rem;
+  }
+
+  /* Aree */
+  .aree-sezione {
+    padding-top: 0;
+  }
+  .aree {
+    display: grid;
+    gap: 2rem;
+  }
+  @media (min-width: 64rem) {
+    .aree {
+      grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+      gap: clamp(3rem, 6vw, 6rem);
+      align-items: start;
+    }
+    .aree__intro {
+      position: sticky;
+      top: 2rem;
+    }
+  }
+  .aree__intro p {
+    margin-top: 1rem;
+    max-width: 24em;
+  }
+  .aree__tutte {
+    display: inline-block;
+    margin-top: 1.25rem;
+  }
+  .aree__elenco {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-bottom: 1px solid var(--filetto);
+  }
+  .aree__elenco li {
+    padding-block: 1.4rem;
+    border-top: 1px solid var(--filetto);
+  }
+  .aree__elenco h3 {
+    font-size: var(--t-m);
+    margin-bottom: 0.35rem;
+  }
+  .aree__elenco h3 a {
+    color: var(--testo);
+    text-decoration: none;
+  }
+  .aree__elenco h3 a:hover {
+    color: var(--terracotta-scuro);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+  }
+
+  /* Come lavoro */
+  .lavoro {
+    background: var(--sabbia);
+  }
+  .lavoro__griglia {
+    display: grid;
+    gap: 2.5rem;
+    align-items: center;
+  }
+  @media (min-width: 64rem) {
+    .lavoro__griglia {
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+      gap: clamp(3rem, 7vw, 7rem);
+    }
+  }
+  .lavoro__testo {
+    max-width: var(--misura);
+  }
+  .lavoro__testo h2 {
+    margin-bottom: 1.5rem;
+  }
+  .lavoro__fatti {
+    list-style: none;
+    margin: 2rem 0;
+    padding: 0;
+  }
+  .lavoro__fatti li {
+    padding-block: 0.65rem;
+    border-top: 1px solid rgb(44 74 110 / 0.2);
+  }
+  .lavoro__fatti li:last-child {
+    border-bottom: 1px solid rgb(44 74 110 / 0.2);
+  }
+  .lavoro a {
+    color: var(--terracotta-profondo);
+  }
+  .lavoro__foto {
+    margin: 0;
+  }
+  .lavoro__foto :global(img) {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    object-position: 50% 45%;
+    border-radius: var(--raggio);
+  }
+
+  /* Passi */
+  .passi-titolo {
+    margin-bottom: 2.75rem;
+  }
+  .passi-link {
+    margin-top: 2.5rem;
+  }
+</style>

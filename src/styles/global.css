@@ -1,0 +1,251 @@
+/* ==========================================================================
+   Token — unico punto in cui si definiscono colori, caratteri e spazi
+   ========================================================================== */
+:root {
+  /* Palette (CLAUDE.md) */
+  --sfondo: #fbf8f3;
+  /* Testo in blu jeans: scuro per i titoli e il corpo, più chiaro per le note */
+  --testo: #2c4a6e;
+  --testo-tenue: #4a5f7e;
+  --sabbia: #eadfcf;
+  --sabbia-chiara: #f3ece1;
+  --salvia: #7f927a;
+  --terracotta: #b8704f;
+  /* Varianti scure per testo e pulsanti: contrasto AA ≥ 4.5:1 */
+  --salvia-scuro: #55684f;
+  --terracotta-scuro: #9a5638;
+  --terracotta-profondo: #7e4429;
+  --filetto: #d9cdbb;
+
+  /* Caratteri (self-hosted da Astro Fonts) */
+  --titoli: var(--font-titoli), Georgia, serif;
+  --corpo: var(--font-testo), system-ui, sans-serif;
+
+  /* Scala tipografica 1.25 su base 18px */
+  --t-piccolo: 0.889rem;
+  --t-base: 1.125rem;
+  --t-m: 1.406rem;
+  --t-l: 1.758rem;
+  --t-xl: clamp(1.9rem, 1.4rem + 2vw, 2.75rem);
+  --t-hero: clamp(2.15rem, 1.4rem + 4.4vw, 4.4rem);
+
+  /* Spazi */
+  --margine: clamp(1rem, 4vw, 2.5rem);
+  --larghezza: 74rem;
+  --misura: 36em;
+  --sezione: clamp(3rem, 2rem + 5vw, 7.5rem);
+  --raggio: 0.75rem;
+}
+
+/* ==========================================================================
+   Base
+   ========================================================================== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-padding-top: 6rem;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+body {
+  margin: 0;
+  background: var(--sfondo);
+  color: var(--testo);
+  font-family: var(--corpo);
+  font-size: var(--t-base);
+  line-height: 1.6;
+  font-kerning: normal;
+  font-variant-ligatures: common-ligatures;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--titoli);
+  font-weight: 400;
+  font-variation-settings: 'SOFT' 100, 'WONK' 0;
+  line-height: 1.12;
+  letter-spacing: -0.01em;
+  margin: 0;
+  text-wrap: balance;
+}
+
+h1 {
+  font-size: var(--t-hero);
+  font-weight: 350;
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+}
+
+h2 {
+  font-size: var(--t-xl);
+}
+
+h3 {
+  font-size: var(--t-l);
+  line-height: 1.2;
+}
+
+p {
+  margin: 0;
+  text-wrap: pretty;
+}
+
+p + p {
+  margin-top: 1em;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  color: var(--terracotta-scuro);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+}
+
+a:hover {
+  color: var(--terracotta-profondo);
+  text-decoration-thickness: 2px;
+}
+
+:focus-visible {
+  outline: 3px solid var(--terracotta-scuro);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+::selection {
+  background: var(--sabbia);
+}
+
+/* ==========================================================================
+   Utility condivise
+   ========================================================================== */
+.contenitore {
+  width: 100%;
+  max-width: var(--larghezza);
+  margin-inline: auto;
+  padding-inline: var(--margine);
+}
+
+.sezione {
+  padding-block: var(--sezione);
+}
+
+.misura {
+  max-width: var(--misura);
+}
+
+/* Titolo di sezione a sinistra e contenuto a destra (da desktop in su) */
+.due-colonne {
+  display: grid;
+  gap: 1.5rem;
+}
+@media (min-width: 64rem) {
+  .due-colonne {
+    grid-template-columns: minmax(0, 0.7fr) minmax(0, 1.3fr);
+    gap: clamp(3rem, 6vw, 6rem);
+  }
+  .due-colonne > h2 {
+    position: sticky;
+    top: 2rem;
+    align-self: start;
+  }
+}
+
+.tenue {
+  color: var(--testo-tenue);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.salta {
+  position: absolute;
+  left: var(--margine);
+  top: -4rem;
+  z-index: 100;
+  background: var(--testo);
+  color: var(--sfondo);
+  padding: 0.6rem 1rem;
+  border-radius: 0.5rem;
+}
+
+.salta:focus {
+  top: 1rem;
+  color: var(--sfondo);
+}
+
+/* Pulsanti */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  min-height: 3rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 999px;
+  font-family: var(--corpo);
+  font-size: var(--t-base);
+  font-weight: 600;
+  line-height: 1.2;
+  text-decoration: none;
+  background: var(--terracotta-scuro);
+  color: #fff;
+  border: 2px solid var(--terracotta-scuro);
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.btn:hover {
+  background: var(--terracotta-profondo);
+  border-color: var(--terracotta-profondo);
+  color: #fff;
+  text-decoration: none;
+}
+
+.btn--contorno {
+  background: transparent;
+  color: var(--testo);
+  border-color: var(--testo);
+}
+
+.btn--contorno:hover {
+  background: var(--testo);
+  border-color: var(--testo);
+  color: var(--sfondo);
+}
+
+/* Segnaposto ben visibile per i dati mancanti */
+.segnaposto {
+  background: #fff0a8;
+  color: #4a3b00;
+  padding: 0.05em 0.35em;
+  border-radius: 0.25em;
+  font-family: var(--corpo);
+  font-size: 0.9em;
+  font-weight: 600;
+}

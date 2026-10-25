@@ -1,0 +1,142 @@
+---
+import { url } from '../lib/url';
+import { Font } from 'astro:assets';
+import { INDICIZZA } from 'astro:env/server';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import BarraContatti from '../components/BarraContatti.astro';
+import { sito } from '../data/sito';
+import '../styles/global.css';
+
+interface Props {
+  titolo: string;
+  descrizione: string;
+  /** Dati strutturati aggiuntivi della singola pagina (es. FAQ) */
+  datiPagina?: Record<string, unknown>;
+}
+const { titolo, descrizione, datiPagina } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const home = new URL(url('/'), Astro.site).href;
+const immagineSocial = new URL(url('/og-image.jpg'), Astro.site).href;
+const s = sito.studio;
+
+// Dati strutturati (schema.org) per Google: attività professionale locale,
+// la professionista, i servizi con i prezzi e il sito. Nessun riferimento a psicoterapia.
+const datiStrutturati = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': ['MedicalBusiness', 'LocalBusiness'],
+      '@id': `${home}#studio`,
+      name: `${sito.nomeCompleto} — ${sito.titolo}`,
+      description:
+        'Psicologa clinica con formazione sistemico-relazionale ad Acilia (Roma) e online. Colloqui per adolescenti, adulti, coppie e famiglie; sostegno alla genitorialità; DSA e ADHD.',
+      url: home,
+      image: immagineSocial,
+      telephone: '+39 347 772 1576',
+      email: sito.email,
+      priceRange: '60–80 €',
+      currenciesAccepted: 'EUR',
+      availableLanguage: 'it',
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: s.via,
+        postalCode: s.cap,
+        addressLocality: `${s.citta} (${s.quartiere})`,
+        addressRegion: 'RM',
+        addressCountry: 'IT',
+      },
+      // [DA COMPLETARE: coordinate geo dello studio, vedi SEO.md]
+      areaServed: [
+        { '@type': 'Place', name: 'Acilia, Roma' },
+        { '@type': 'City', name: 'Roma' },
+        { '@type': 'Country', name: 'Italia (colloqui online)' },
+      ],
+      sameAs: [sito.facebook],
+      founder: { '@id': `${home}#psicologa` },
+      hasOfferCatalog: {
+        '@type': 'OfferCatalog',
+        name: 'Colloqui psicologici',
+        itemListElement: sito.tariffe.map((t) => ({
+          '@type': 'Offer',
+          itemOffered: { '@type': 'Service', name: t.voce },
+          price: t.prezzo,
+          priceCurrency: 'EUR',
+        })),
+      },
+    },
+    {
+      '@type': 'Person',
+      '@id': `${home}#psicologa`,
+      name: sito.nomeCompleto,
+      jobTitle: 'Psicologa clinica',
+      image: immagineSocial,
+      worksFor: { '@id': `${home}#studio` },
+      alumniOf: { '@type': 'CollegeOrUniversity', name: 'Sapienza Università di Roma' },
+      knowsAbout: [
+        'Psicologia clinica',
+        'Approccio sistemico-relazionale',
+        'Sostegno alla genitorialità',
+        'Adolescenza',
+        'DSA',
+        'ADHD',
+        'Coppia e famiglia',
+        'Disturbi dell’umore',
+      ],
+      hasCredential: {
+        '@type': 'EducationalOccupationalCredential',
+        credentialCategory: 'Iscrizione albo professionale',
+        name: `Iscrizione all'${sito.albo.ordine}, sezione ${sito.albo.sezione}, n. ${sito.albo.numero}`,
+        recognizedBy: { '@type': 'Organization', name: sito.albo.ordine },
+      },
+    },
+    {
+      '@type': 'WebSite',
+      '@id': `${home}#sito`,
+      url: home,
+      name: `${sito.nomeCompleto} — Psicologa`,
+      inLanguage: 'it-IT',
+    },
+    ...(datiPagina ? [datiPagina] : []),
+  ],
+};
+---
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{titolo}</title>
+    <meta name="description" content={descrizione} />
+    <meta name="robots" content={INDICIZZA ? 'index, follow, max-image-preview:large' : 'noindex, nofollow'} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href={url('/favicon.svg')} type="image/svg+xml" />
+    <meta name="theme-color" content="#fbf8f3" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="it_IT" />
+    <meta property="og:title" content={titolo} />
+    <meta property="og:description" content={descrizione} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content={`${sito.nomeCompleto} — Psicologa`} />
+    <meta property="og:image" content={immagineSocial} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Dott.ssa Maria Grazia De Zan, psicologa ad Acilia (Roma) e online" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <Font cssVariable="--font-titoli" preload />
+    <Font cssVariable="--font-testo" preload />
+
+    <script type="application/ld+json" set:html={JSON.stringify(datiStrutturati)} />
+  </head>
+  <body>
+    <a class="salta" href="#contenuto">Vai al contenuto</a>
+    <Header />
+    <main id="contenuto">
+      <slot />
+    </main>
+    <Footer />
+    <BarraContatti />
+  </body>
+</html>

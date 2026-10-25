@@ -1,0 +1,123 @@
+---
+import { url } from '../lib/url';
+import { sito, navigazione } from '../data/sito';
+import Segnaposto from './Segnaposto.astro';
+
+const s = sito.studio;
+---
+<footer class="piede">
+  <div class="contenitore piede__griglia">
+    <div class="piede__marchio">
+      <p class="piede__nome">{sito.nomeCompleto}</p>
+      <p class="tenue">{sito.titolo}. {sito.orari}, in studio ad {s.quartiere} e online.</p>
+    </div>
+
+    <div>
+      <h2 class="piede__titolo">Studio</h2>
+      <address>
+        presso {s.presso}<br />
+        {s.via}<br />
+        {s.cap} {s.citta} ({s.quartiere})
+      </address>
+    </div>
+
+    <div>
+      <h2 class="piede__titolo">Contatti</h2>
+      <ul class="piede__lista">
+        <li><a href={sito.telefonoLink}>{sito.telefono}</a></li>
+        <li><a href={sito.whatsappLink} rel="noopener">WhatsApp</a></li>
+        <li><a href={`mailto:${sito.email}`}>{sito.email}</a></li>
+        <li><a href={sito.facebook} rel="noopener">Facebook</a></li>
+      </ul>
+    </div>
+
+    <nav aria-label="Pagine del sito">
+      <h2 class="piede__titolo">Pagine</h2>
+      <ul class="piede__lista">
+        {navigazione.map(({ href, etichetta }) => <li><a href={url(href)}>{etichetta}</a></li>)}
+      </ul>
+    </nav>
+  </div>
+
+  <div class="contenitore piede__legale">
+    <p>
+      {sito.nomeCompleto} — {sito.titolo} — Iscritta all'{sito.albo.ordine} n. {sito.albo.numero} — P.IVA {sito.partitaIva ?? <Segnaposto testo="P.IVA" />}
+    </p>
+    <p class="piede__policy">
+      <a href={url('/privacy-policy/')}>Privacy Policy</a>
+      <a href={url('/cookie-policy/')}>Cookie Policy</a>
+    </p>
+  </div>
+</footer>
+
+<style>
+  .piede {
+    background: var(--sabbia-chiara);
+    border-top: 1px solid var(--filetto);
+    padding-top: clamp(3rem, 6vw, 4.5rem);
+    font-size: 1rem;
+  }
+  .piede__griglia {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  @media (min-width: 40rem) {
+    .piede__griglia {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (min-width: 64rem) {
+    .piede__griglia {
+      grid-template-columns: 1.4fr 1fr 1fr 1fr;
+    }
+  }
+  .piede__nome {
+    font-family: var(--titoli);
+    font-size: var(--t-m);
+    line-height: 1.2;
+    margin-bottom: 0.5rem;
+  }
+  .piede__marchio p {
+    max-width: 22rem;
+  }
+  .piede__titolo {
+    font-family: var(--corpo);
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0;
+    margin-bottom: 0.6rem;
+  }
+  address {
+    font-style: normal;
+  }
+  .piede__lista {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.35rem;
+  }
+  .piede a {
+    color: var(--testo);
+  }
+  .piede a:hover {
+    color: var(--terracotta-scuro);
+  }
+  .piede__legale {
+    margin-top: clamp(2.5rem, 5vw, 3.5rem);
+    padding-block: 1.5rem 2rem;
+    border-top: 1px solid var(--filetto);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.75rem 2rem;
+    font-size: var(--t-piccolo);
+    color: var(--testo-tenue);
+  }
+  .piede__policy {
+    display: flex;
+    gap: 1.25rem;
+    margin: 0;
+  }
+</style>

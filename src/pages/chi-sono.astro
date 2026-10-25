@@ -1,0 +1,134 @@
+---
+import Base from '../layouts/Base.astro';
+import Tratto from '../components/Tratto.astro';
+import RitrattoArco from '../components/RitrattoArco.astro';
+import CtaFinale from '../components/CtaFinale.astro';
+import { sito } from '../data/sito';
+import ritratto from '../assets/foto/maria-grazia-de-zan-psicologa-roma.avif';
+
+// Formazione ed esperienze in un unico racconto in prosa: pochi nomi, nessun elenco di date.
+const racconto = [
+  'La mia esperienza nasce nel lavoro con i ragazzi e le loro famiglie: prima con il tirocinio nella comunità terapeutica Villa Maraini, poi per diversi anni con il CEIS di Roma, nella prevenzione del disagio giovanile e delle dipendenze e nel Progetto Famiglia. Un percorso che ha orientato la mia formazione sistemico-relazionale: sono specializzanda in Psicoterapia Relazionale presso l’I.P.R. di Roma.',
+  'Conosco da vicino anche la scuola: sono stata insegnante di sostegno e oggi coordino le attività educative e didattiche di una scuola primaria di Roma. Ho lavorato inoltre come assistente domiciliare e con bambini e ragazzi con DSA e ADHD, cioè difficoltà specifiche di apprendimento e di attenzione.',
+  `Oggi ricevo come libera professionista nel mio studio ad ${sito.studio.quartiere}, presso ${sito.studio.presso}, e online.`,
+];
+
+---
+<Base
+  titolo="Chi sono | Dott.ssa Maria Grazia De Zan, psicologa ad Acilia e online"
+  descrizione="Psicologa clinica con formazione sistemico-relazionale e oltre quindici anni di esperienza tra studio, scuola e famiglie. Il mio percorso e il mio approccio."
+>
+  <!-- Apertura -->
+  <section class="apertura">
+    <div class="contenitore apertura__griglia">
+      <div>
+        <h1>Sono <span class="nome">Maria Grazia De&nbsp;Zan,</span> psicologa clinica.</h1>
+        <Tratto class="apertura__tratto" />
+        <p class="apertura__lead">
+          Da oltre quindici anni mi occupo di salute mentale, prevenzione del disagio e
+          promozione del benessere psicologico, in ambito clinico, educativo e familiare.
+          L'esperienza mi ha insegnato che una difficoltà raramente riguarda una sola
+          persona: si inscrive nelle relazioni, dove spesso si trovano anche le risorse
+          per affrontarla.
+        </p>
+      </div>
+      <div class="apertura__foto">
+        <RitrattoArco
+          src={ritratto}
+          alt="Ritratto di Maria Grazia De Zan, psicologa, sorridente su uno sfondo chiaro"
+          priorita
+          posizione="48% 35%"
+          sizes="(min-width: 64rem) 24rem, (min-width: 40rem) 20rem, 60vw"
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- La mia storia: formazione ed esperienze in un unico racconto -->
+  <section class="sezione" aria-labelledby="storia-titolo">
+    <div class="contenitore due-colonne">
+      <h2 id="storia-titolo">Il mio percorso</h2>
+      <div class="storia">
+        {racconto.map((testo) => <p>{testo}</p>)}
+      </div>
+    </div>
+  </section>
+
+  <!-- Approccio -->
+  <section class="sezione approccio" aria-labelledby="approccio-titolo">
+    <div class="contenitore due-colonne">
+      <h2 id="approccio-titolo">Il mio approccio</h2>
+      <div class="misura">
+        <p>
+          La mia formazione è sistemico-relazionale: ogni difficoltà viene letta
+          all'interno del contesto relazionale in cui si manifesta. Non si tratta di
+          individuare un responsabile, ma di comprendere come le persone comunicano, si
+          sostengono e, talvolta senza volerlo, si ostacolano.
+        </p>
+        <p>
+          Il lavoro si fonda sull'ascolto e sulla valorizzazione delle risorse già
+          presenti, individuali e familiari, per costruire insieme un percorso adeguato
+          alla tua situazione.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <CtaFinale />
+</Base>
+
+<style>
+  /* Apertura */
+  .apertura {
+    padding-block: clamp(1.5rem, 6vw, 5rem) clamp(1.5rem, 5vw, 4rem);
+  }
+  .apertura__griglia {
+    display: grid;
+    gap: 1.75rem;
+    align-items: center;
+  }
+  .apertura__foto {
+    order: -1;
+    width: min(42%, 11rem);
+    margin-inline: auto 1rem;
+  }
+  @media (min-width: 64rem) {
+    .apertura__griglia {
+      grid-template-columns: minmax(0, 1.3fr) minmax(0, 0.7fr);
+      gap: clamp(3rem, 6vw, 6rem);
+    }
+    .apertura__foto {
+      order: 0;
+      width: 100%;
+      max-width: 24rem;
+      margin: 0;
+    }
+  }
+  .apertura h1 {
+    font-size: clamp(2.1rem, 1.4rem + 3.6vw, 3.8rem);
+    max-width: 14em;
+  }
+  @media (min-width: 40rem) {
+    .apertura h1 .nome {
+      white-space: nowrap;
+    }
+  }
+  .apertura :global(.apertura__tratto) {
+    width: min(16rem, 60%);
+    height: 1.2rem;
+    margin: 1rem 0 1.5rem;
+  }
+  .apertura__lead {
+    font-size: clamp(1.125rem, 1rem + 0.4vw, 1.3rem);
+    max-width: 34em;
+  }
+
+  .approccio {
+    background: var(--sabbia);
+  }
+
+  /* Racconto in prosa continua */
+  .storia {
+    max-width: var(--misura);
+  }
+</style>

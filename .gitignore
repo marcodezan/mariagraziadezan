@@ -1,0 +1,21 @@
+# Dipendenze e file generati
+node_modules/
+dist/
+.astro/
+.wrangler/
+
+# Segreti locali
+.dev.vars
+.env
+.env.*
+
+# Documenti e materiali interni: restano solo nella cartella sul computer
+CLAUDE.md
+contenuti.md
+SEO.md
+assets/foto/
+.claude/
+
+# Sistema
+.DS_Store
+Thumbs.db

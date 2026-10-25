@@ -1,0 +1,6 @@
+---
+// Evidenzia in giallo un'informazione mancante, così non passa inosservata.
+interface Props { testo: string; tipo?: 'DA COMPLETARE' | 'DA VERIFICARE' }
+const { testo, tipo = 'DA COMPLETARE' } = Astro.props;
+---
+<mark class="segnaposto">[{tipo}: {testo}]</mark>

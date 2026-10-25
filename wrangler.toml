@@ -1,0 +1,15 @@
+# Configurazione Cloudflare Pages (sito statico + funzione del modulo di contatto)
+name = "mariagraziadezan"
+pages_build_output_dir = "dist"
+compatibility_date = "2026-06-01"
+
+[vars]
+# [DA COMPLETARE] l'indirizzo mittente deve appartenere al dominio definitivo,
+# con Email Routing attivo su Cloudflare.
+MITTENTE = "sito@mariagraziadezan.it"
+DESTINATARIO = "dottoressa.dezan@gmail.com"
+
+# Invio email verso un indirizzo verificato in Email Routing
+[[send_email]]
+name = "EMAIL"
+destination_address = "dottoressa.dezan@gmail.com"

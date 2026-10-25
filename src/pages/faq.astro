@@ -1,0 +1,163 @@
+---
+import { url } from '../lib/url';
+import Base from '../layouts/Base.astro';
+import Tratto from '../components/Tratto.astro';
+import CtaFinale from '../components/CtaFinale.astro';
+import { sito } from '../data/sito';
+
+const s = sito.studio;
+const segnaposto = (tipo: string, testo: string) => `<mark class="segnaposto">[${tipo}: ${testo}]</mark>`;
+const tariffe = sito.tariffe.map((t) => `${t.voce.toLowerCase()} ${t.prezzo}&nbsp;€`).join(', ');
+
+// Risposte brevi, pensate per la lettura da telefono.
+const domande = [
+  {
+    domanda: 'Quanto dura un incontro?',
+    risposta: `<p>Ogni incontro dura ${sito.incontro.durataMinuti} minuti, sia in studio sia online.</p>`,
+  },
+  {
+    domanda: 'Ogni quanto ci si incontra?',
+    risposta: '<p>La frequenza viene definita insieme dopo i primi colloqui, in base alle esigenze e agli obiettivi del percorso, e può cambiare nel tempo.</p>',
+  },
+  {
+    domanda: 'È meglio un colloquio in studio o online?',
+    risposta: `<p>Entrambe le modalità offrono la stessa cura e la stessa riservatezza. Lo studio si trova ad ${s.quartiere}, presso ${s.presso}; il colloquio online è una soluzione utile se abiti lontano o hai poco tempo per gli spostamenti. Puoi scegliere al momento del primo contatto.</p>`,
+  },
+  {
+    domanda: 'Ciò che racconto resta riservato?',
+    risposta: '<p>Sì. Sono tenuta al segreto professionale previsto dal Codice Deontologico degli Psicologi, salvo i casi stabiliti dalla legge. I dati personali sono trattati nel rispetto della normativa sulla privacy.</p>',
+  },
+  {
+    domanda: 'È possibile un percorso per un figlio minorenne?',
+    risposta: '<p>Sì. Per avviare un percorso con un minorenne è necessario il consenso dei genitori o di chi esercita la responsabilità genitoriale. Quando è utile, la famiglia viene coinvolta negli incontri.</p>',
+  },
+  {
+    domanda: 'Quanto costa un incontro?',
+    risposta: `<p>Le tariffe per incontro sono: ${tariffe}.</p><p>Primo colloquio: ${segnaposto('DA VERIFICARE', 'costo del primo colloquio')}</p>`,
+  },
+  {
+    domanda: 'È possibile avere la fattura?',
+    risposta: `<p>${segnaposto('DA VERIFICARE', 'rilascio della fattura e detraibilità delle prestazioni come spese sanitarie')}</p>`,
+  },
+  {
+    domanda: 'Come posso disdire un appuntamento?',
+    risposta: `<p>${segnaposto('DA COMPLETARE', 'modalità e preavviso per disdire o spostare un appuntamento')}</p>`,
+  },
+  {
+    domanda: 'Come si prenota il primo colloquio?',
+    risposta: `<p>Puoi telefonare al <a href="${sito.telefonoLink}">${sito.telefono}</a>, scrivere su <a href="${sito.whatsappLink}" rel="noopener">WhatsApp</a> o all’indirizzo <a href="mailto:${sito.email}">${sito.email}</a>, oppure usare il modulo nella pagina <a href="${url('/contatti/')}">Contatti</a>.</p>`,
+  },
+];
+
+// Dati strutturati FAQ per Google: solo le risposte complete (senza segnaposto)
+const datiFaq = {
+  '@type': 'FAQPage',
+  mainEntity: domande
+    .filter((d) => !d.risposta.includes('segnaposto'))
+    .map((d) => ({
+      '@type': 'Question',
+      name: d.domanda,
+      acceptedAnswer: { '@type': 'Answer', text: d.risposta.replace(/<[^>]+>/g, ' ').replace(/&nbsp;/g, ' ').replace(/\s+/g, ' ').trim() },
+    })),
+};
+---
+<Base
+  titolo="Domande frequenti | Psicologa ad Acilia e online | Dott.ssa Maria Grazia De Zan"
+  descrizione="Durata degli incontri, studio o online, riservatezza, minorenni, costi e prenotazione: le risposte alle domande più frequenti."
+  datiPagina={datiFaq}
+>
+  <section class="apertura">
+    <div class="contenitore">
+      <h1>Domande frequenti</h1>
+      <Tratto class="apertura__tratto" />
+      <p class="apertura__lead">
+        Le risposte alle domande che vengono poste più spesso prima di iniziare.
+      </p>
+    </div>
+  </section>
+
+  <section class="sezione faq-sezione" aria-label="Elenco delle domande">
+    <div class="contenitore">
+      <div class="faq">
+        {domande.map((d) => (
+          <details class="faq__voce">
+            <summary>{d.domanda}</summary>
+            <div class="faq__risposta" set:html={d.risposta} />
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <CtaFinale />
+</Base>
+
+<style>
+  /* Base: telefono */
+  .apertura {
+    padding-block: clamp(1.5rem, 6vw, 4.5rem) 0;
+  }
+  .apertura h1 {
+    font-size: clamp(2.1rem, 1.4rem + 3.6vw, 3.8rem);
+  }
+  .apertura :global(.apertura__tratto) {
+    width: min(14rem, 60%);
+    height: 1.1rem;
+    margin: 0.9rem 0 1.25rem;
+  }
+  .apertura__lead {
+    max-width: 32em;
+  }
+  .faq-sezione {
+    padding-top: 1.5rem;
+  }
+
+  .faq {
+    max-width: 46rem;
+    border-bottom: 1px solid var(--filetto);
+  }
+  .faq__voce {
+    border-top: 1px solid var(--filetto);
+  }
+  .faq__voce summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    min-height: 3.5rem;
+    padding-block: 0.9rem;
+    font-family: var(--titoli);
+    font-size: 1.2rem;
+    line-height: 1.3;
+    cursor: pointer;
+    list-style: none;
+  }
+  .faq__voce summary::-webkit-details-marker {
+    display: none;
+  }
+  .faq__voce summary::after {
+    content: '+';
+    flex-shrink: 0;
+    font-family: var(--corpo);
+    font-size: 1.6rem;
+    line-height: 1;
+    color: var(--terracotta-scuro);
+    transition: transform 0.2s ease;
+  }
+  .faq__voce[open] summary::after {
+    transform: rotate(45deg);
+  }
+  .faq__risposta {
+    padding-bottom: 1.25rem;
+    max-width: var(--misura);
+  }
+  .faq__risposta :global(p + p) {
+    margin-top: 0.75em;
+  }
+
+  @media (min-width: 64rem) {
+    .faq__voce summary {
+      font-size: var(--t-m);
+    }
+  }
+</style>
