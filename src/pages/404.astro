@@ -1,0 +1,45 @@
+---
+import Base from '../layouts/Base.astro';
+import Tratto from '../components/Tratto.astro';
+import { url } from '../lib/url';
+---
+<Base
+  titolo="Pagina non trovata | Dott.ssa Maria Grazia De Zan, Psicologa"
+  descrizione="La pagina richiesta non esiste o è stata spostata."
+>
+  <section class="contenitore non-trovata">
+    <h1>Questa pagina non esiste</h1>
+    <Tratto class="non-trovata__tratto" />
+    <p>
+      Il collegamento potrebbe essere errato o la pagina potrebbe essere stata spostata.
+      Puoi tornare alla pagina iniziale o andare direttamente ai contatti.
+    </p>
+    <div class="non-trovata__azioni">
+      <a class="btn" href={url('/')}>Torna alla pagina iniziale</a>
+      <a class="btn btn--contorno" href={url('/contatti/')}>Vai ai contatti</a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .non-trovata {
+    padding-block: clamp(2.5rem, 8vw, 6rem) var(--sezione);
+  }
+  .non-trovata > :global(*) {
+    max-width: var(--misura);
+  }
+  .non-trovata h1 {
+    font-size: clamp(2.1rem, 1.4rem + 3.6vw, 3.6rem);
+  }
+  .non-trovata :global(.non-trovata__tratto) {
+    width: min(14rem, 60%);
+    height: 1.1rem;
+    margin: 0.9rem 0 1.25rem;
+  }
+  .non-trovata__azioni {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 2rem;
+  }
+</style>

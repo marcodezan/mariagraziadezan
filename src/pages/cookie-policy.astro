@@ -1,0 +1,46 @@
+---
+import TestoLegale from '../components/TestoLegale.astro';
+import { url } from '../lib/url';
+import { sito } from '../data/sito';
+---
+<TestoLegale
+  titolo="Cookie Policy"
+  titoloPagina="Cookie Policy | Dott.ssa Maria Grazia De Zan, Psicologa"
+  descrizione="Informazioni sull'uso dei cookie nel sito della Dott.ssa Maria Grazia De Zan: nessun cookie di profilazione o di statistica."
+  aggiornamento="25 ottobre 2026"
+>
+  <p>
+    I cookie sono piccoli file che un sito può salvare nel browser di chi lo visita. Questa
+    pagina spiega quali cookie usa questo sito, nel rispetto delle Linee guida del Garante
+    per la protezione dei dati personali del 10 giugno 2021.
+  </p>
+
+  <h2>In breve</h2>
+  <p>Questo sito <strong>non usa cookie di profilazione, pubblicitari o di statistica</strong> e
+    non contiene strumenti di tracciamento come Google Analytics o pixel dei social
+    network. Per questo non viene mostrato alcun banner per il consenso.</p>
+
+  <h2>Cookie tecnici</h2>
+  <p>Il sito non imposta cookie propri. Il servizio che lo ospita ({sito.hosting}) e il
+    controllo anti-spam del modulo di contatto (Cloudflare Turnstile) possono usare
+    strumenti strettamente tecnici, necessari alla sicurezza e al corretto funzionamento.
+    Questi strumenti non richiedono consenso e non servono a tracciare la navigazione.</p>
+
+  <h2>Caratteri e immagini</h2>
+  <p>I caratteri tipografici e le immagini sono ospitati direttamente sul sito: la loro
+    visualizzazione non comporta collegamenti a servizi esterni come Google Fonts.</p>
+
+  <h2>Collegamenti a servizi esterni</h2>
+  <p>Alcuni pulsanti portano a servizi esterni: Google Maps per le indicazioni stradali,
+    WhatsApp per scrivere un messaggio e la pagina Facebook. Questi servizi vengono aperti
+    solo se scegli di usarli, e da quel momento si applicano le loro informative sulla
+    privacy e sui cookie.</p>
+
+  <h2>Come gestire i cookie</h2>
+  <p>Puoi in ogni momento consultare, bloccare o cancellare i cookie dalle impostazioni
+    del tuo browser, alla voce dedicata alla privacy o ai dati dei siti.</p>
+
+  <h2>Contatti</h2>
+  <p>Per qualsiasi domanda sul trattamento dei dati puoi scrivere a <a href={`mailto:${sito.email}`}>{sito.email}</a>. Le informazioni complete sono
+    nella <a href={url('/privacy-policy/')}>Privacy Policy</a>.</p>
+</TestoLegale>

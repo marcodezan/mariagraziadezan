@@ -1,0 +1,61 @@
+---
+// Impaginato comune per Privacy Policy e Cookie Policy: colonna di lettura stretta,
+// titoli chiari, data di aggiornamento in evidenza.
+import Base from '../layouts/Base.astro';
+
+interface Props {
+  titolo: string;
+  titoloPagina: string;
+  descrizione: string;
+  aggiornamento: string;
+}
+const { titolo, titoloPagina, descrizione, aggiornamento } = Astro.props;
+---
+<Base titolo={titoloPagina} descrizione={descrizione}>
+  <article class="contenitore legale">
+    <h1>{titolo}</h1>
+    <p class="legale__data tenue">Ultimo aggiornamento: {aggiornamento}</p>
+    <slot />
+  </article>
+</Base>
+
+<style>
+  .legale {
+    padding-block: clamp(1.5rem, 6vw, 4.5rem) var(--sezione);
+  }
+  .legale > :global(*) {
+    max-width: var(--misura);
+  }
+  .legale h1 {
+    font-size: clamp(2rem, 1.4rem + 3vw, 3.2rem);
+  }
+  .legale__data {
+    margin-top: 0.75rem;
+    font-size: var(--t-piccolo);
+  }
+  .legale :global(h2) {
+    font-size: var(--t-m);
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--filetto);
+  }
+  .legale :global(ul) {
+    margin: 0.75rem 0 0;
+    padding-left: 1.2rem;
+  }
+  .legale :global(li + li) {
+    margin-top: 0.4rem;
+  }
+  .legale :global(p + ul),
+  .legale :global(ul + p) {
+    margin-top: 0.9rem;
+  }
+  .legale :global(address) {
+    font-style: normal;
+    margin-top: 0.75rem;
+  }
+  .legale :global(a) {
+    overflow-wrap: anywhere;
+  }
+</style>

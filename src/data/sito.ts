@@ -30,6 +30,10 @@ export const sito = {
   },
   orari: 'Riceve su appuntamento',
 
+  // Fornitore che ospita il sito (citato in Privacy e Cookie Policy).
+  // Da aggiornare al passaggio su Cloudflare Pages.
+  hosting: 'GitHub Pages, servizio di GitHub, Inc. (Stati Uniti)',
+
   // Chiave pubblica Cloudflare Turnstile (anti-spam del modulo).
   // Ora è la chiave di prova ufficiale di Cloudflare: [DA COMPLETARE] con quella reale.
   turnstileSiteKey: '1x00000000000000000000AA',

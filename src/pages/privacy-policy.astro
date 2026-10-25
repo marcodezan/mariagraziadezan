@@ -1,0 +1,95 @@
+---
+import TestoLegale from '../components/TestoLegale.astro';
+import Segnaposto from '../components/Segnaposto.astro';
+import { url } from '../lib/url';
+import { sito } from '../data/sito';
+
+const s = sito.studio;
+---
+<TestoLegale
+  titolo="Privacy Policy"
+  titoloPagina="Privacy Policy | Dott.ssa Maria Grazia De Zan, Psicologa"
+  descrizione="Informativa sul trattamento dei dati personali raccolti tramite il sito della Dott.ssa Maria Grazia De Zan, psicologa ad Acilia (Roma) e online."
+  aggiornamento="25 ottobre 2026"
+>
+  <p>
+    Questa informativa descrive come vengono trattati i dati personali di chi visita il
+    sito o lo usa per mettersi in contatto, ai sensi dell'art. 13 del Regolamento (UE)
+    2016/679 (GDPR).
+  </p>
+
+  <h2>Titolare del trattamento</h2>
+  <p>Il titolare del trattamento è:</p>
+  <address>
+    {sito.nomeCompleto}, {sito.titolo}<br />
+    {s.via}, {s.cap} {s.citta} (presso {s.presso})<br />
+    Email: <a href={`mailto:${sito.email}`}>{sito.email}</a><br />
+    Telefono: <a href={sito.telefonoLink}>{sito.telefono}</a><br />
+    P.IVA {sito.partitaIva ?? <Segnaposto testo="P.IVA" />}
+  </address>
+
+  <h2>Quali dati vengono trattati</h2>
+  <p><strong>Dati di navigazione.</strong> Come avviene per qualsiasi sito, il servizio
+    che lo ospita ({sito.hosting}) registra automaticamente alcuni dati tecnici, come
+    l'indirizzo IP, il tipo di browser e l'orario della visita, per garantire il
+    funzionamento e la sicurezza del sito. Questi dati non vengono usati per
+    identificare i visitatori.</p>
+  <p><strong>Dati inviati volontariamente.</strong> Se scrivi tramite il modulo di
+    contatto, via email o WhatsApp, oppure telefoni, vengono trattati i dati che scegli
+    di comunicare: nome, recapito (email o telefono) e contenuto del messaggio.</p>
+  <p><strong>Dati sanitari.</strong> Ti chiedo di non inserire nel modulo o nei messaggi
+    informazioni sulla salute o altri dati personali sensibili. Se vengono comunque
+    comunicati, saranno trattati solo per rispondere alla richiesta.</p>
+
+  <h2>Perché vengono trattati e su quale base</h2>
+  <ul>
+    <li>Rispondere alle richieste di informazioni e fissare un primo colloquio, su tua
+      richiesta (art. 6, par. 1, lett. b, GDPR).</li>
+    <li>Garantire la sicurezza del sito e proteggere il modulo da invii automatici
+      (spam), per legittimo interesse del titolare (art. 6, par. 1, lett. f, GDPR).</li>
+  </ul>
+  <p>Il conferimento dei dati nel modulo è facoltativo, ma senza un nome e un recapito
+    non è possibile rispondere.</p>
+
+  <h2>Come vengono trattati</h2>
+  <p>I messaggi inviati con il modulo non vengono salvati sul sito: sono inoltrati
+    direttamente alla casella email della titolare. I dati non vengono diffusi, ceduti
+    a terzi né usati per finalità commerciali o di profilazione.</p>
+  <p>Per il funzionamento del sito e dei contatti ci si avvale di fornitori che agiscono
+    come responsabili del trattamento o titolari autonomi:</p>
+  <ul>
+    <li>{sito.hosting}, per ospitare il sito;</li>
+    <li>Cloudflare, Inc., per l'invio dei messaggi del modulo e per il controllo
+      anti-spam Cloudflare Turnstile;</li>
+    <li>Google LLC, che fornisce la casella email della titolare;</li>
+    <li>WhatsApp (Meta Platforms), solo se scegli di scrivere tramite WhatsApp.</li>
+  </ul>
+  <p>Alcuni di questi fornitori hanno sede negli Stati Uniti. Il trasferimento dei dati
+    avviene sulla base delle garanzie previste dal GDPR, come il Data Privacy Framework
+    UE-USA o le clausole contrattuali standard.{' '}
+    <Segnaposto tipo="DA VERIFICARE" testo="garanzie di trasferimento indicate dai singoli fornitori" /></p>
+
+  <h2>Per quanto tempo vengono conservati</h2>
+  <p>I dati inviati per contattarmi sono conservati per il tempo necessario a gestire la
+    richiesta. <Segnaposto testo="tempo massimo di conservazione dei messaggi" /></p>
+  <p>Se dal contatto nasce un percorso professionale, il trattamento dei dati è regolato
+    da un'informativa specifica, consegnata al primo colloquio insieme al consenso
+    informato. <Segnaposto tipo="DA VERIFICARE" testo="informativa e consenso per i pazienti" /></p>
+
+  <h2>I tuoi diritti</h2>
+  <p>In qualsiasi momento puoi chiedere di:</p>
+  <ul>
+    <li>accedere ai tuoi dati e riceverne copia;</li>
+    <li>correggerli o aggiornarli;</li>
+    <li>cancellarli o limitarne il trattamento;</li>
+    <li>opporti al trattamento basato sul legittimo interesse;</li>
+    <li>ricevere i dati in un formato leggibile (portabilità).</li>
+  </ul>
+  <p>Per esercitare questi diritti scrivi a <a href={`mailto:${sito.email}`}>{sito.email}</a>.
+    Hai inoltre il diritto di proporre reclamo al Garante per la protezione dei dati
+    personali (<a href="https://www.garanteprivacy.it" rel="noopener">www.garanteprivacy.it</a>).</p>
+
+  <h2>Cookie</h2>
+  <p>Il sito non usa cookie di profilazione né strumenti di statistica. I dettagli sono
+    nella <a href={url('/cookie-policy/')}>Cookie Policy</a>.</p>
+</TestoLegale>
