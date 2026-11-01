@@ -1,20 +1,16 @@
 ---
 import { url } from '../lib/url';
 import { sito } from '../data/sito';
-interface Props { titolo?: string }
-const { titolo = 'Quando lo ritieni opportuno, puoi fissare un primo colloquio.' } = Astro.props;
+import T from './T.astro';
 ---
 <section class="cta sezione" aria-labelledby="cta-titolo">
   <div class="contenitore cta__interno">
-    <h2 id="cta-titolo">{titolo}</h2>
+    <T as="h2" id="cta-titolo" k="cta.titolo" />
     <div class="cta__azioni">
       <a class="btn" href={url('/contatti/')}>Prenota un primo colloquio</a>
-      <p class="tenue">oppure telefona al <a href={sito.telefonoLink}>{sito.telefono}</a></p>
+      <p class="tenue">oppure telefona al <a href={sito.telefonoLink}><T k="dati.telefono" /></a></p>
     </div>
-    <p class="cta__nota tenue">
-      Per i minorenni il percorso richiede il consenso dei genitori o di chi esercita
-      la responsabilità genitoriale.
-    </p>
+    <T as="p" class="cta__nota tenue" k="cta.nota" />
   </div>
 </section>
 

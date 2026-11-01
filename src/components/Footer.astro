@@ -1,7 +1,7 @@
 ---
 import { url } from '../lib/url';
 import { sito, navigazione } from '../data/sito';
-import Segnaposto from './Segnaposto.astro';
+import T from './T.astro';
 
 const s = sito.studio;
 ---
@@ -9,24 +9,24 @@ const s = sito.studio;
   <div class="contenitore piede__griglia">
     <div class="piede__marchio">
       <p class="piede__nome">{sito.nomeCompleto}</p>
-      <p class="tenue">{sito.titolo}. {sito.orari}, in studio ad {s.quartiere} e online.</p>
+      <p class="tenue">{sito.titolo}. <T k="dati.orari" />, in studio ad <T k="dati.quartiere" /> e online.</p>
     </div>
 
     <div>
       <h2 class="piede__titolo">Studio</h2>
       <address>
-        presso {s.presso}<br />
-        {s.via}<br />
-        {s.cap} {s.citta} ({s.quartiere})
+        presso <T k="dati.presso" /><br />
+        <T k="dati.via" /><br />
+        <T k="dati.cap" /> <T k="dati.citta" /> (<T k="dati.quartiere" />)
       </address>
     </div>
 
     <div>
       <h2 class="piede__titolo">Contatti</h2>
       <ul class="piede__lista">
-        <li><a href={sito.telefonoLink}>{sito.telefono}</a></li>
+        <li><a href={sito.telefonoLink}><T k="dati.telefono" /></a></li>
         <li><a href={sito.whatsappLink} rel="noopener">WhatsApp</a></li>
-        <li><a href={`mailto:${sito.email}`}>{sito.email}</a></li>
+        <li><a href={`mailto:${sito.email}`}><T k="dati.email" /></a></li>
         <li><a href={sito.facebook} rel="noopener">Facebook</a></li>
       </ul>
     </div>
@@ -41,11 +41,12 @@ const s = sito.studio;
 
   <div class="contenitore piede__legale">
     <p>
-      {sito.nomeCompleto} — {sito.titolo} — Iscritta all'{sito.albo.ordine} n. {sito.albo.numero} — P.IVA {sito.partitaIva ?? <Segnaposto testo="P.IVA" />}
+      {sito.nomeCompleto} — {sito.titolo} — Iscritta all'{sito.albo.ordine} n. {sito.albo.numero} — P.IVA <T k="dati.partitaIva" />
     </p>
     <p class="piede__policy">
       <a href={url('/privacy-policy/')}>Privacy Policy</a>
       <a href={url('/cookie-policy/')}>Cookie Policy</a>
+      <button type="button" class="piede__riservata" data-apri-modifica>Area riservata</button>
     </p>
   </div>
 </footer>
@@ -117,7 +118,19 @@ const s = sito.studio;
   }
   .piede__policy {
     display: flex;
-    gap: 1.25rem;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.25rem;
     margin: 0;
+  }
+  .piede__riservata {
+    padding: 0;
+    background: none;
+    border: 0;
+    font: inherit;
+    color: var(--testo-tenue);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.18em;
+    cursor: pointer;
   }
 </style>

@@ -5,6 +5,8 @@ import PassiColloquio from '../components/PassiColloquio.astro';
 import CtaFinale from '../components/CtaFinale.astro';
 import { Picture } from 'astro:assets';
 import { sito } from '../data/sito';
+import T from '../components/T.astro';
+import Paragrafi from '../components/Paragrafi.astro';
 import fotoStudio from '../assets/foto/studio-psicologa-acilia-roma.jpg';
 
 const s = sito.studio;
@@ -15,38 +17,24 @@ const s = sito.studio;
 >
   <section class="apertura">
     <div class="contenitore">
-      <h1>Il primo colloquio</h1>
+      <T as="h1" k="primoColloquio.titolo" />
       <Tratto class="apertura__tratto" />
-      <p class="apertura__lead">
-        Il primo colloquio è un incontro di conoscenza: serve a comprendere la tua
-        richiesta e a valutare insieme se e come proseguire.
-      </p>
+      <T as="p" class="apertura__lead" k="primoColloquio.lead" />
     </div>
   </section>
 
   <!-- Cosa aspettarsi -->
   <section class="sezione sezione--stretta" aria-labelledby="aspettarsi-titolo">
     <div class="contenitore due-colonne">
-      <h2 id="aspettarsi-titolo">Cosa aspettarsi</h2>
-      <div class="misura">
-        <p>
-          Durante il primo incontro potrai raccontare ciò che ti ha portato a chiedere un
-          colloquio, con i tuoi tempi. Non è necessario prepararsi né sapere già cosa
-          dire: il colloquio viene guidato con attenzione e senza giudizio.
-        </p>
-        <p>
-          Al termine si condivide una prima lettura della situazione e, se lo ritieni
-          utile, si definiscono insieme obiettivi, frequenza e modalità del percorso.
-          Tutto ciò che emerge è tutelato dal segreto professionale.
-        </p>
-      </div>
+      <T as="h2" id="aspettarsi-titolo" k="primoColloquio.aspettarsiTitolo" />
+      <Paragrafi class="misura" k="primoColloquio.aspettarsi" />
     </div>
   </section>
 
   <!-- I passi -->
   <section class="sezione sezione--stretta" aria-labelledby="passi-titolo">
     <div class="contenitore">
-      <h2 id="passi-titolo" class="passi-titolo">Come iniziare</h2>
+      <T as="h2" id="passi-titolo" class="passi-titolo" k="primoColloquio.passiTitolo" />
       <PassiColloquio />
     </div>
   </section>
@@ -55,22 +43,15 @@ const s = sito.studio;
   <section class="sezione luogo" aria-labelledby="luogo-titolo">
     <div class="contenitore luogo__griglia">
       <div>
-        <h2 id="luogo-titolo">In studio o online</h2>
+        <T as="h2" id="luogo-titolo" k="primoColloquio.luogoTitolo" />
         <div class="luogo__voce">
-          <h3>Nello studio ad {s.quartiere}</h3>
-          <p>
-            Lo studio si trova presso {s.presso}, in {s.via}, {s.cap} {s.citta}.
-            Si riceve su appuntamento.
-          </p>
+          <T as="h3" k="primoColloquio.studioTitolo" />
+          <T as="p" k="primoColloquio.studioTesto" />
           <a href={s.mappaLink} rel="noopener">Apri in Google Maps</a>
         </div>
         <div class="luogo__voce">
-          <h3>Online</h3>
-          <p>
-            Il colloquio può svolgersi anche in videochiamata, con la stessa cura e la
-            stessa riservatezza. È sufficiente una connessione stabile e un luogo
-            tranquillo in cui parlare liberamente.
-          </p>
+          <T as="h3" k="primoColloquio.onlineTitolo" />
+          <T as="p" k="primoColloquio.onlineTesto" />
         </div>
       </div>
       <figure class="luogo__foto">
@@ -89,25 +70,19 @@ const s = sito.studio;
   <!-- Durata e costi -->
   <section class="sezione" aria-labelledby="costi-titolo">
     <div class="contenitore due-colonne">
-      <h2 id="costi-titolo">Durata e costi</h2>
+      <T as="h2" id="costi-titolo" k="primoColloquio.costiTitolo" />
       <div class="misura">
-        <p>
-          Ogni incontro dura {sito.incontro.durataMinuti} minuti. La frequenza viene
-          concordata insieme, in base alle esigenze e agli obiettivi del percorso.
-        </p>
+        <T as="p" k="primoColloquio.costiTesto" />
         <dl class="tariffe">
-          {sito.tariffe.map((t) => (
+          {sito.tariffe.map((_, i) => (
             <div class="tariffe__riga">
-              <dt>{t.voce}</dt>
-              <dd>{t.prezzo} €</dd>
+              <T as="dt" k={`dati.tariffe.${i}.voce`} />
+              <dd><T k={`dati.tariffe.${i}.prezzo`} />&nbsp;€</dd>
             </div>
           ))}
         </dl>
-        <p class="tenue tariffe__nota">Costo per singolo incontro di {sito.incontro.durataMinuti} minuti.</p>
-        <p class="minori">
-          Per i minorenni il percorso richiede il consenso dei genitori o di chi esercita
-          la responsabilità genitoriale.
-        </p>
+        <T as="p" class="tenue tariffe__nota" k="primoColloquio.costiNota" />
+        <T as="p" class="minori" k="primoColloquio.notaMinori" />
       </div>
     </div>
   </section>

@@ -1,30 +1,19 @@
 ---
 import Tratto from './Tratto.astro';
+import T from './T.astro';
+import { testi } from '../lib/testi';
 
-const passi = [
-  {
-    titolo: 'Il primo contatto',
-    testo: 'Puoi contattarmi per telefono, WhatsApp, email o tramite il modulo del sito per fissare un appuntamento.',
-  },
-  {
-    titolo: 'Il primo colloquio',
-    testo: 'In studio ad Acilia oppure online: un incontro dedicato ad ascoltare la tua richiesta e a conoscerci.',
-  },
-  {
-    titolo: 'La definizione del percorso',
-    testo: 'Valutiamo insieme se e come proseguire, concordando obiettivi, frequenza e modalità degli incontri.',
-  },
-];
+const passi = testi.passi;
 ---
 <ol class="passi">
-  {passi.map((p, i) => (
+  {passi.map((_, i) => (
     <li class="passo">
       <span class="passo__numero" aria-hidden="true">
         {i + 1}
         <Tratto forma="cerchio" class="passo__cerchio" />
       </span>
-      <h3 class="passo__titolo">{p.titolo}</h3>
-      <p class="tenue">{p.testo}</p>
+      <T as="h3" class="passo__titolo" k={`passi.${i}.titolo`} />
+      <T as="p" class="tenue" k={`passi.${i}.testo`} />
     </li>
   ))}
 </ol>

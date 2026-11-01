@@ -7,15 +7,13 @@ import PassiColloquio from '../components/PassiColloquio.astro';
 import CtaFinale from '../components/CtaFinale.astro';
 import { Picture } from 'astro:assets';
 import { sito, aree } from '../data/sito';
+import { testi } from '../lib/testi';
+import T from '../components/T.astro';
+import Paragrafi from '../components/Paragrafi.astro';
 import ritratto from '../assets/foto/maria-grazia-de-zan-psicologa-colloquio.jpg';
 import fotoStudio from '../assets/foto/studio-psicologa-acilia-diplomi.jpg';
 
-const destinatari = [
-  { nome: 'Adolescenti', testo: 'Difficoltà emotive, scolastiche e relazionali legate alla crescita, a volte difficili da esprimere a parole.' },
-  { nome: 'Adulti', testo: 'Periodi di umore basso, stanchezza emotiva, fasi di cambiamento o di scelta vissute con difficoltà.' },
-  { nome: 'Coppie', testo: 'Difficoltà di comunicazione, conflitti ricorrenti, momenti di crisi o di trasformazione della relazione.' },
-  { nome: 'Famiglie', testo: 'Cambiamenti, conflitti e fasi del ciclo di vita familiare che richiedono un nuovo equilibrio.' },
-];
+const home = testi.home;
 ---
 <Base
   titolo="Psicologa ad Acilia (Roma) e online | Dott.ssa Maria Grazia De Zan"
@@ -25,16 +23,12 @@ const destinatari = [
   <section class="hero">
     <div class="contenitore hero__griglia">
       <div class="hero__testo">
-        <h1>Ogni difficoltà ha una storia, da comprendere insieme.</h1>
+        <T as="h1" k="home.titolo" />
         <Tratto disegna class="hero__tratto" />
-        <p class="hero__intro">
-          Sono {sito.nome}, psicologa clinica con formazione sistemico-relazionale.
-          Ricevo adolescenti, adulti, coppie e famiglie nel mio studio
-          ad {sito.studio.quartiere} e online.
-        </p>
+        <T as="p" class="hero__intro" k="home.intro" />
         <div class="hero__azioni">
           <a class="btn" href={url('/contatti/')}>Prenota un primo colloquio</a>
-          <p class="tenue">oppure telefona al <a href={sito.telefonoLink}>{sito.telefono}</a></p>
+          <p class="tenue">oppure telefona al <a href={sito.telefonoLink}><T k="dati.telefono" /></a></p>
         </div>
         <p class="hero__albo">
           Iscritta all'{sito.albo.ordine} dal {sito.albo.dal}, n. {sito.albo.numero}
@@ -56,19 +50,16 @@ const destinatari = [
   <!-- A chi mi rivolgo -->
   <section class="sezione" aria-labelledby="chi-titolo">
     <div class="contenitore">
-      <h2 id="chi-titolo">A chi mi rivolgo</h2>
+      <T as="h2" id="chi-titolo" k="home.chiTitolo" />
       <ul class="destinatari">
-        {destinatari.map((d) => (
+        {home.destinatari.map((_, i) => (
           <li>
-            <h3>{d.nome}</h3>
-            <p class="tenue">{d.testo}</p>
+            <T as="h3" k={`home.destinatari.${i}.nome`} />
+            <T as="p" class="tenue" k={`home.destinatari.${i}.testo`} />
           </li>
         ))}
       </ul>
-      <p class="destinatari__nota misura">
-        Offro inoltre consulenza ai <strong>genitori</strong> sulle questioni educative,
-        per comprendere ciò che un figlio sta vivendo e come sostenerlo.
-      </p>
+      <T as="p" class="destinatari__nota misura" k="home.genitori" />
     </div>
   </section>
 
@@ -76,18 +67,15 @@ const destinatari = [
   <section class="sezione aree-sezione" aria-labelledby="aree-titolo">
     <div class="contenitore aree">
       <div class="aree__intro">
-        <h2 id="aree-titolo">Aree di intervento</h2>
-        <p class="tenue">
-          Gli ambiti in cui opero, maturati in oltre quindici anni di esperienza
-          clinica, educativa e familiare.
-        </p>
+        <T as="h2" id="aree-titolo" k="home.areeTitolo" />
+        <T as="p" class="tenue" k="home.areeIntro" />
         <a class="aree__tutte" href={url('/aree-di-intervento/')}>Tutte le aree di intervento</a>
       </div>
       <ul class="aree__elenco">
-        {aree.map((a) => (
+        {aree.map((a, i) => (
           <li>
-            <h3><a href={url(`/aree-di-intervento/#${a.id}`)}>{a.titolo}</a></h3>
-            <p class="tenue">{a.breve}</p>
+            <h3><a href={url(`/aree-di-intervento/#${a.id}`)}><T k={`aree.${i}.titolo`} /></a></h3>
+            <T as="p" class="tenue" k={`aree.${i}.breve`} />
           </li>
         ))}
       </ul>
@@ -98,20 +86,10 @@ const destinatari = [
   <section class="sezione lavoro" aria-labelledby="lavoro-titolo">
     <div class="contenitore lavoro__griglia">
       <div class="lavoro__testo">
-        <h2 id="lavoro-titolo">Come lavoro</h2>
-        <p>
-          Nell'approccio sistemico-relazionale, che orienta la mia formazione, una
-          difficoltà viene compresa anche alla luce delle relazioni in cui nasce: la
-          famiglia, la coppia, la scuola.
-        </p>
-        <p>
-          Il lavoro si fonda su un ascolto privo di giudizio e sulla valorizzazione
-          delle risorse già presenti, nella persona e nella sua rete di relazioni.
-        </p>
+        <T as="h2" id="lavoro-titolo" k="home.lavoroTitolo" />
+        <Paragrafi k="home.lavoro" />
         <ul class="lavoro__fatti">
-          <li>In studio ad {sito.studio.quartiere}, presso {sito.studio.presso}</li>
-          <li>Online, in videochiamata</li>
-          <li>Incontri di {sito.incontro.durataMinuti} minuti</li>
+          {home.lavoroFatti.map((_, i) => <T as="li" k={`home.lavoroFatti.${i}`} />)}
         </ul>
         <a href={url('/chi-sono/')}>Il mio percorso e la mia formazione</a>
       </div>
@@ -131,7 +109,7 @@ const destinatari = [
   <!-- Il primo colloquio -->
   <section class="sezione" aria-labelledby="passi-titolo">
     <div class="contenitore">
-      <h2 id="passi-titolo" class="passi-titolo">Come iniziare</h2>
+      <T as="h2" id="passi-titolo" class="passi-titolo" k="home.passiTitolo" />
       <PassiColloquio />
       <p class="passi-link"><a href={url('/primo-colloquio/')}>Cosa aspettarsi dal primo colloquio</a></p>
     </div>

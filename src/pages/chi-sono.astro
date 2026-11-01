@@ -3,15 +3,10 @@ import Base from '../layouts/Base.astro';
 import Tratto from '../components/Tratto.astro';
 import RitrattoArco from '../components/RitrattoArco.astro';
 import CtaFinale from '../components/CtaFinale.astro';
-import { sito } from '../data/sito';
+import T from '../components/T.astro';
+import Paragrafi from '../components/Paragrafi.astro';
 import ritratto from '../assets/foto/maria-grazia-de-zan-psicologa-roma.avif';
 
-// Formazione ed esperienze in un unico racconto in prosa: pochi nomi, nessun elenco di date.
-const racconto = [
-  'La mia esperienza nasce nel lavoro con i ragazzi e le loro famiglie: prima con il tirocinio nella comunità terapeutica Villa Maraini, poi per diversi anni con il CEIS di Roma, nella prevenzione del disagio giovanile e delle dipendenze e nel Progetto Famiglia. Un percorso che ha orientato la mia formazione sistemico-relazionale: sono specializzanda in Psicoterapia Relazionale presso l’I.P.R. di Roma.',
-  'Conosco da vicino anche la scuola: sono stata insegnante di sostegno e oggi coordino le attività educative e didattiche di una scuola primaria di Roma. Ho lavorato inoltre come assistente domiciliare e con bambini e ragazzi con DSA e ADHD, cioè difficoltà specifiche di apprendimento e di attenzione.',
-  `Oggi ricevo come libera professionista nel mio studio ad ${sito.studio.quartiere}, presso ${sito.studio.presso}, e online.`,
-];
 
 ---
 <Base
@@ -24,13 +19,7 @@ const racconto = [
       <div>
         <h1>Sono <span class="nome">Maria Grazia De&nbsp;Zan,</span> psicologa clinica.</h1>
         <Tratto class="apertura__tratto" />
-        <p class="apertura__lead">
-          Da oltre quindici anni mi occupo di salute mentale, prevenzione del disagio e
-          promozione del benessere psicologico, in ambito clinico, educativo e familiare.
-          L'esperienza mi ha insegnato che una difficoltà raramente riguarda una sola
-          persona: si inscrive nelle relazioni, dove spesso si trovano anche le risorse
-          per affrontarla.
-        </p>
+        <T as="p" class="apertura__lead" k="chiSono.lead" />
       </div>
       <div class="apertura__foto">
         <RitrattoArco
@@ -47,30 +36,16 @@ const racconto = [
   <!-- La mia storia: formazione ed esperienze in un unico racconto -->
   <section class="sezione" aria-labelledby="storia-titolo">
     <div class="contenitore due-colonne">
-      <h2 id="storia-titolo">Il mio percorso</h2>
-      <div class="storia">
-        {racconto.map((testo) => <p>{testo}</p>)}
-      </div>
+      <T as="h2" id="storia-titolo" k="chiSono.percorsoTitolo" />
+      <Paragrafi class="storia" k="chiSono.percorso" />
     </div>
   </section>
 
   <!-- Approccio -->
   <section class="sezione approccio" aria-labelledby="approccio-titolo">
     <div class="contenitore due-colonne">
-      <h2 id="approccio-titolo">Il mio approccio</h2>
-      <div class="misura">
-        <p>
-          La mia formazione è sistemico-relazionale: ogni difficoltà viene letta
-          all'interno del contesto relazionale in cui si manifesta. Non si tratta di
-          individuare un responsabile, ma di comprendere come le persone comunicano, si
-          sostengono e, talvolta senza volerlo, si ostacolano.
-        </p>
-        <p>
-          Il lavoro si fonda sull'ascolto e sulla valorizzazione delle risorse già
-          presenti, individuali e familiari, per costruire insieme un percorso adeguato
-          alla tua situazione.
-        </p>
-      </div>
+      <T as="h2" id="approccio-titolo" k="chiSono.approccioTitolo" />
+      <Paragrafi class="misura" k="chiSono.approccio" />
     </div>
   </section>
 

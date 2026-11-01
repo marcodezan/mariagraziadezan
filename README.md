@@ -14,12 +14,37 @@ npm run build      # genera il sito nella cartella dist/
 
 | Cosa | Dove |
 |---|---|
-| Dati professionali, contatti, tariffe, aree | `src/data/sito.ts` (unica fonte) |
+| **Testi modificabili** (pagine, FAQ, contatti, prezzi) | `src/content/testi.json` |
+| Dati fissi e collegamenti (Albo, link telefono/WhatsApp/mappa) | `src/data/sito.ts` |
 | Colori, caratteri, spazi | `src/styles/global.css` (variabili in `:root`) |
 | Pagine | `src/pages/` |
 | Componenti (intestazione, piè di pagina, modulo…) | `src/components/` |
 | Foto usate nel sito | `src/assets/foto/` (Astro le converte in AVIF/WebP) |
 | Invio del modulo di contatto | `functions/api/contatto.ts` (solo su Cloudflare) |
+
+## Modifica dei testi dal sito
+
+La Dottoressa può modificare i testi direttamente dal sito pubblicato
+(piè di pagina → **Area riservata**). Le modifiche vengono salvate in
+`src/content/testi.json` su GitHub e il sito si ripubblica da solo.
+Guida per lei: `GUIDA-MODIFICA-TESTI.md`.
+
+### Creare il codice di accesso (una volta, dal proprietario del repository)
+1. GitHub → foto profilo → **Settings** → **Developer settings** →
+   **Personal access tokens** → **Fine-grained tokens** → **Generate new token**.
+2. Nome: `Sito – modifica testi`. Scadenza: a scelta (es. 1 anno).
+3. **Repository access** → *Only select repositories* → `mariagraziadezan`.
+4. **Permissions** → *Repository permissions* → **Contents: Read and write**.
+5. **Generate token** e copia il codice (inizia con `github_pat_`).
+6. Consegnalo alla Dottoressa di persona o con un messaggio che poi cancellerai:
+   è come una password.
+
+Per revocarlo: stessa pagina → token → **Delete**. Alla scadenza se ne crea uno nuovo.
+
+### Protezioni
+- Prima di ogni pubblicazione `scripts/controlla-testi.mjs` blocca il sito se nei
+  testi compare "psicoterapeuta"; online resta la versione precedente.
+- La modalità modifica rifiuta testi vuoti e la stessa parola già al salvataggio.
 
 ## Pubblicazione
 

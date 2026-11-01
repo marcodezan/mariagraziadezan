@@ -1,0 +1,13 @@
+---
+// Testo breve modificabile (titolo, riga, voce). La modalità modifica lo rende
+// scrivibile grazie all'attributo data-testo.
+import { leggi, conSegnaposto } from '../lib/testi';
+
+interface Props {
+  k: string;
+  as?: string;
+  [attributo: string]: unknown;
+}
+const { k, as: Tag = 'span', ...resto } = Astro.props;
+---
+<Tag data-testo={k} {...resto} set:html={conSegnaposto(leggi(k))} />

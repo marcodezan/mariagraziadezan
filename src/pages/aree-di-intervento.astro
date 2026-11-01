@@ -3,31 +3,9 @@ import Base from '../layouts/Base.astro';
 import Tratto from '../components/Tratto.astro';
 import CtaFinale from '../components/CtaFinale.astro';
 import { aree } from '../data/sito';
+import T from '../components/T.astro';
+import Paragrafi from '../components/Paragrafi.astro';
 
-// Testi delle aree: brevi, pensati per la lettura da telefono.
-// Nessuna promessa di risultati; i termini tecnici sono spiegati.
-const testi: Record<string, string[]> = {
-  genitorialita: [
-    'Essere genitori comporta passaggi complessi: l’ingresso a scuola, l’adolescenza, una separazione, un cambiamento nella famiglia. Il sostegno alla genitorialità offre uno spazio di confronto per comprendere ciò che sta accadendo nella relazione con i figli.',
-    'Insieme si individuano le modalità educative più adatte alla fase che la famiglia sta attraversando, tenendo conto anche del contesto scolastico in cui i figli crescono.',
-  ],
-  'scuola-dsa-adhd': [
-    'I DSA, disturbi specifici dell’apprendimento, riguardano abilità come la lettura, la scrittura e il calcolo: ne fanno parte la dislessia, la disortografia, la disgrafia e la discalculia. L’ADHD è un disturbo del neurosviluppo che interessa l’attenzione, l’impulsività e il livello di attività.',
-    'Offro orientamento e supporto a ragazzi e genitori e favorisco il dialogo con gli insegnanti, per costruire strategie condivise. Il percorso non sostituisce la valutazione diagnostica, affidata a équipe specializzate, ma può accompagnare la famiglia prima e dopo.',
-  ],
-  adolescenza: [
-    'L’adolescenza è una fase di grandi trasformazioni, in cui possono emergere difficoltà emotive, chiusura, conflitti in famiglia o un calo nel rendimento scolastico.',
-    'Ai ragazzi offro uno spazio di ascolto riservato e, quando è utile, coinvolgo anche i genitori. Mi occupo inoltre di prevenzione dei comportamenti a rischio, ambito in cui ho maturato una lunga esperienza.',
-  ],
-  'coppia-famiglia': [
-    'Le difficoltà di una coppia o di una famiglia raramente dipendono da una sola persona. Comunicazione che si inceppa, conflitti ricorrenti, momenti di crisi o di cambiamento possono essere affrontati guardando alle relazioni nel loro insieme.',
-    'Secondo l’approccio sistemico-relazionale, gli incontri sono l’occasione per comprendere le dinamiche in atto e cercare insieme modalità di dialogo più funzionali.',
-  ],
-  umore: [
-    'Tristezza persistente, perdita di interesse, calo di energia, irritabilità o sbalzi d’umore possono incidere in modo significativo sulla vita quotidiana, sul lavoro e sulle relazioni.',
-    'Il colloquio psicologico offre uno spazio per dare un nome a ciò che si sta vivendo, comprenderne il significato e individuare le risorse su cui contare. Quando necessario, posso indicare un confronto con altri professionisti, come il medico di base o lo psichiatra.',
-  ],
-};
 ---
 <Base
   titolo="Aree di intervento | Psicologa ad Acilia e online | Dott.ssa Maria Grazia De Zan"
@@ -35,33 +13,25 @@ const testi: Record<string, string[]> = {
 >
   <section class="apertura">
     <div class="contenitore">
-      <h1>Aree di intervento</h1>
+      <T as="h1" k="areePagina.titolo" />
       <Tratto class="apertura__tratto" />
-      <p class="apertura__lead">
-        Lavoro con adolescenti, adulti, coppie e famiglie. Queste sono le aree in cui
-        opero più spesso, sempre con uno sguardo attento alle relazioni.
-      </p>
+      <T as="p" class="apertura__lead" k="areePagina.intro" />
     </div>
   </section>
 
   <div class="contenitore aree">
     <nav class="indice" aria-label="Aree in questa pagina">
       <ul>
-        {aree.map((a) => <li><a href={`#${a.id}`}>{a.titolo}</a></li>)}
+        {aree.map((a, i) => <li><a href={`#${a.id}`}><T k={`aree.${i}.titolo`} /></a></li>)}
       </ul>
     </nav>
 
     <div class="aree__testi">
-      {aree.map((a) => (
+      {aree.map((a, i) => (
         <section id={a.id} class="area" aria-labelledby={`${a.id}-titolo`}>
-          <h2 id={`${a.id}-titolo`}>{a.titolo}</h2>
-          {testi[a.id].map((t) => <p>{t}</p>)}
-          {a.id === 'adolescenza' && (
-            <p class="area__nota">
-              Per i minorenni il percorso richiede il consenso dei genitori o di chi
-              esercita la responsabilità genitoriale.
-            </p>
-          )}
+          <T as="h2" id={`${a.id}-titolo`} k={`aree.${i}.titolo`} />
+          <Paragrafi k={`aree.${i}.testo`} />
+          {a.id === 'adolescenza' && <T as="p" class="area__nota" k="areePagina.notaMinori" />}
         </section>
       ))}
     </div>

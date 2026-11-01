@@ -4,14 +4,15 @@ import Tratto from '../components/Tratto.astro';
 import FormContatto from '../components/FormContatto.astro';
 import { Picture, Image } from 'astro:assets';
 import { sito } from '../data/sito';
+import T from '../components/T.astro';
 import ritratto from '../assets/foto/maria-grazia-de-zan-psicologa-acilia-ritratto.jpg';
 import fotoStanza from '../assets/foto/studio-psicologa-acilia-stanza.jpg';
 
 const s = sito.studio;
 const recapiti = [
-  { etichetta: 'Telefono', valore: sito.telefono, href: sito.telefonoLink },
-  { etichetta: 'WhatsApp', valore: sito.telefono, href: sito.whatsappLink, esterno: true },
-  { etichetta: 'Email', valore: sito.email, href: `mailto:${sito.email}` },
+  { etichetta: 'Telefono', chiave: 'dati.telefono', href: sito.telefonoLink },
+  { etichetta: 'WhatsApp', chiave: 'dati.telefono', href: sito.whatsappLink, esterno: true },
+  { etichetta: 'Email', chiave: 'dati.email', href: `mailto:${sito.email}` },
 ];
 ---
 <Base
@@ -21,12 +22,9 @@ const recapiti = [
   <section class="apertura">
     <div class="contenitore apertura__riga">
       <div>
-        <h1>Contatti</h1>
+        <T as="h1" k="contatti.titolo" />
         <Tratto class="apertura__tratto" />
-        <p class="apertura__lead">
-          Per fissare un primo colloquio o chiedere informazioni puoi chiamarmi, scrivermi
-          su WhatsApp o via email, oppure usare il modulo. {sito.orari}.
-        </p>
+        <T as="p" class="apertura__lead" k="contatti.lead" />
       </div>
       <Image
         class="apertura__foto"
@@ -49,7 +47,7 @@ const recapiti = [
             <li>
               <a href={r.href} rel={r.esterno ? 'noopener' : undefined}>
                 <span class="recapiti__etichetta">{r.etichetta}</span>
-                <span class="recapiti__valore">{r.valore}</span>
+                <T class="recapiti__valore" k={r.chiave} />
               </a>
             </li>
           ))}
@@ -58,14 +56,14 @@ const recapiti = [
 
       <!-- Studio -->
       <section class="studio" aria-labelledby="studio-titolo">
-        <h2 id="studio-titolo">Lo studio</h2>
+        <T as="h2" id="studio-titolo" k="contatti.studioTitolo" />
         <address>
-          presso {s.presso}<br />
-          {s.via}<br />
-          {s.cap} {s.citta} ({s.quartiere})
+          presso <T k="dati.presso" /><br />
+          <T k="dati.via" /><br />
+          <T k="dati.cap" /> <T k="dati.citta" /> (<T k="dati.quartiere" />)
         </address>
         <a class="btn btn--contorno studio__mappa" href={s.mappaLink} rel="noopener">Apri in Google Maps</a>
-        <p class="tenue studio__online">I colloqui si svolgono anche online, in videochiamata.</p>
+        <T as="p" class="tenue studio__online" k="contatti.online" />
         <Picture
           class="studio__foto"
           src={fotoStanza}
@@ -80,7 +78,7 @@ const recapiti = [
 
     <!-- Modulo -->
     <section class="contatti__modulo" aria-labelledby="modulo-titolo">
-      <h2 id="modulo-titolo">Scrivimi</h2>
+      <T as="h2" id="modulo-titolo" k="contatti.moduloTitolo" />
       <FormContatto />
     </section>
   </div>

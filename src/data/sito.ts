@@ -1,5 +1,11 @@
-// Unica fonte dei dati professionali e di contatto usati in tutto il sito.
-// I valori null vengono mostrati come segnaposto evidente [DA COMPLETARE].
+// Dati professionali e di contatto usati in tutto il sito.
+import { testi } from '../lib/testi';
+
+// I dati modificabili dalla Dottoressa (contatti, indirizzo, prezzi…) stanno nel file
+// dei testi; qui si ricavano i collegamenti (telefono, WhatsApp, mappa).
+const d = testi.dati;
+const cifre = d.telefono.replace(/\D/g, '');
+const internazionale = cifre.startsWith('39') ? cifre : `39${cifre}`;
 
 export const sito = {
   nome: 'Maria Grazia De Zan',
@@ -11,24 +17,23 @@ export const sito = {
     sezione: 'A',
     dal: '2007',
   },
-  partitaIva: null as string | null, // [DA COMPLETARE: P.IVA]
+  partitaIva: d.partitaIva,
 
-  telefono: '347 772 1576',
-  telefonoLink: 'tel:+393477721576',
-  whatsappLink: 'https://wa.me/393477721576',
-  email: 'dottoressa.dezan@gmail.com',
+  telefono: d.telefono,
+  telefonoLink: `tel:+${internazionale}`,
+  whatsappLink: `https://wa.me/${internazionale}`,
+  email: d.email,
   facebook: 'https://m.facebook.com/mariagraziadezanpsicologa/',
 
   studio: {
-    presso: 'Poliofficina',
-    via: 'Via G. Bruno Ferrari 43',
-    cap: '00125',
-    citta: 'Roma',
-    quartiere: 'Acilia',
-    mappaLink:
-      'https://www.google.com/maps/search/?api=1&query=Via+G.+Bruno+Ferrari+43,+00125+Roma',
+    presso: d.presso,
+    via: d.via,
+    cap: d.cap,
+    citta: d.citta,
+    quartiere: d.quartiere,
+    mappaLink: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${d.via}, ${d.cap} ${d.citta}`)}`,
   },
-  orari: 'Riceve su appuntamento',
+  orari: d.orari,
 
   // Fornitore che ospita il sito (citato in Privacy e Cookie Policy).
   // Da aggiornare al passaggio su Cloudflare Pages.
@@ -38,15 +43,16 @@ export const sito = {
   // Ora è la chiave di prova ufficiale di Cloudflare: [DA COMPLETARE] con quella reale.
   turnstileSiteKey: '1x00000000000000000000AA',
 
-  incontro: {
-    durataMinuti: 60,
+  // Dove la modalità modifica salva i testi
+  repository: {
+    proprietario: 'marcodezan',
+    nome: 'mariagraziadezan',
+    ramo: 'main',
+    file: 'src/content/testi.json',
   },
-  tariffe: [
-    { voce: 'Colloquio individuale', prezzo: 60 },
-    { voce: 'Sostegno alla genitorialità', prezzo: 75 },
-    { voce: 'Sostegno di coppia', prezzo: 80 },
-  ],
-} as const;
+
+  tariffe: d.tariffe.map((t) => ({ voce: t.voce, prezzo: t.prezzo })),
+};
 
 export const navigazione = [
   { href: '/chi-sono/', etichetta: 'Chi sono' },
@@ -57,30 +63,4 @@ export const navigazione = [
 ] as const;
 
 // Le aree compaiono in home (versione breve) e nella pagina dedicata.
-export const aree = [
-  {
-    id: 'genitorialita',
-    titolo: 'Sostegno alla genitorialità',
-    breve: 'Consulenza e sostegno ai genitori nelle fasi educative più complesse e nella relazione con i figli.',
-  },
-  {
-    id: 'scuola-dsa-adhd',
-    titolo: 'Scuola, DSA e ADHD',
-    breve: 'Orientamento e supporto per difficoltà di apprendimento e di attenzione, in collaborazione con la famiglia e gli insegnanti.',
-  },
-  {
-    id: 'adolescenza',
-    titolo: 'Adolescenza',
-    breve: 'Uno spazio di ascolto dedicato ai ragazzi e un lavoro di prevenzione dei comportamenti a rischio.',
-  },
-  {
-    id: 'coppia-famiglia',
-    titolo: 'Coppia e famiglia',
-    breve: 'Sostegno nelle difficoltà relazionali e comunicative e nei momenti di crisi.',
-  },
-  {
-    id: 'umore',
-    titolo: 'Disturbi dell’umore',
-    breve: 'Tristezza persistente, calo di energia e sbalzi d’umore che incidono sulla vita quotidiana.',
-  },
-] as const;
+export const aree = testi.aree;

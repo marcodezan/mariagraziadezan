@@ -1,0 +1,159 @@
+{
+  "dati": {
+    "telefono": "347 772 1576",
+    "email": "dottoressa.dezan@gmail.com",
+    "presso": "Poliofficina",
+    "via": "Via G. Bruno Ferrari 43",
+    "cap": "00125",
+    "citta": "Roma",
+    "quartiere": "Acilia",
+    "orari": "Riceve su appuntamento",
+    "partitaIva": "[DA COMPLETARE: P.IVA]",
+    "tariffe": [
+      { "voce": "Colloquio individuale", "prezzo": "60" },
+      { "voce": "Sostegno alla genitorialità", "prezzo": "75" },
+      { "voce": "Sostegno di coppia", "prezzo": "80" }
+    ]
+  },
+  "home": {
+    "titolo": "Ogni difficoltà ha una storia, da comprendere insieme.",
+    "intro": "Sono Maria Grazia De Zan, psicologa clinica con formazione sistemico-relazionale. Ricevo adolescenti, adulti, coppie e famiglie nel mio studio ad Acilia e online.",
+    "chiTitolo": "A chi mi rivolgo",
+    "destinatari": [
+      { "nome": "Adolescenti", "testo": "Difficoltà emotive, scolastiche e relazionali legate alla crescita, a volte difficili da esprimere a parole." },
+      { "nome": "Adulti", "testo": "Periodi di umore basso, stanchezza emotiva, fasi di cambiamento o di scelta vissute con difficoltà." },
+      { "nome": "Coppie", "testo": "Difficoltà di comunicazione, conflitti ricorrenti, momenti di crisi o di trasformazione della relazione." },
+      { "nome": "Famiglie", "testo": "Cambiamenti, conflitti e fasi del ciclo di vita familiare che richiedono un nuovo equilibrio." }
+    ],
+    "genitori": "Offro inoltre consulenza ai genitori sulle questioni educative, per comprendere ciò che un figlio sta vivendo e come sostenerlo.",
+    "areeTitolo": "Aree di intervento",
+    "areeIntro": "Gli ambiti in cui opero, maturati in oltre quindici anni di esperienza clinica, educativa e familiare.",
+    "lavoroTitolo": "Come lavoro",
+    "lavoro": [
+      "Nell'approccio sistemico-relazionale, che orienta la mia formazione, una difficoltà viene compresa anche alla luce delle relazioni in cui nasce: la famiglia, la coppia, la scuola.",
+      "Il lavoro si fonda su un ascolto privo di giudizio e sulla valorizzazione delle risorse già presenti, nella persona e nella sua rete di relazioni."
+    ],
+    "lavoroFatti": [
+      "In studio ad Acilia, presso Poliofficina",
+      "Online, in videochiamata",
+      "Incontri di 60 minuti"
+    ],
+    "passiTitolo": "Come iniziare"
+  },
+  "passi": [
+    { "titolo": "Il primo contatto", "testo": "Puoi contattarmi per telefono, WhatsApp, email o tramite il modulo del sito per fissare un appuntamento." },
+    { "titolo": "Il primo colloquio", "testo": "In studio ad Acilia oppure online: un incontro dedicato ad ascoltare la tua richiesta e a conoscerci." },
+    { "titolo": "La definizione del percorso", "testo": "Valutiamo insieme se e come proseguire, concordando obiettivi, frequenza e modalità degli incontri." }
+  ],
+  "cta": {
+    "titolo": "Quando lo ritieni opportuno, puoi fissare un primo colloquio.",
+    "nota": "Per i minorenni il percorso richiede il consenso dei genitori o di chi esercita la responsabilità genitoriale."
+  },
+  "chiSono": {
+    "lead": "Da oltre quindici anni mi occupo di salute mentale, prevenzione del disagio e promozione del benessere psicologico, in ambito clinico, educativo e familiare. L'esperienza mi ha insegnato che una difficoltà raramente riguarda una sola persona: si inscrive nelle relazioni, dove spesso si trovano anche le risorse per affrontarla.",
+    "percorsoTitolo": "Il mio percorso",
+    "percorso": [
+      "La mia esperienza nasce nel lavoro con i ragazzi e le loro famiglie: prima con il tirocinio nella comunità terapeutica Villa Maraini, poi per diversi anni con il CEIS di Roma, nella prevenzione del disagio giovanile e delle dipendenze e nel Progetto Famiglia. Un percorso che ha orientato la mia formazione sistemico-relazionale: sono specializzanda in Psicoterapia Relazionale presso l’I.P.R. di Roma.",
+      "Conosco da vicino anche la scuola: sono stata insegnante di sostegno e oggi coordino le attività educative e didattiche di una scuola primaria di Roma. Ho lavorato inoltre come assistente domiciliare e con bambini e ragazzi con DSA e ADHD, cioè difficoltà specifiche di apprendimento e di attenzione.",
+      "Oggi ricevo come libera professionista nel mio studio ad Acilia, presso Poliofficina, e online."
+    ],
+    "approccioTitolo": "Il mio approccio",
+    "approccio": [
+      "La mia formazione è sistemico-relazionale: ogni difficoltà viene letta all'interno del contesto relazionale in cui si manifesta. Non si tratta di individuare un responsabile, ma di comprendere come le persone comunicano, si sostengono e, talvolta senza volerlo, si ostacolano.",
+      "Il lavoro si fonda sull'ascolto e sulla valorizzazione delle risorse già presenti, individuali e familiari, per costruire insieme un percorso adeguato alla tua situazione."
+    ]
+  },
+  "areePagina": {
+    "titolo": "Aree di intervento",
+    "intro": "Lavoro con adolescenti, adulti, coppie e famiglie. Queste sono le aree in cui opero più spesso, sempre con uno sguardo attento alle relazioni.",
+    "notaMinori": "Per i minorenni il percorso richiede il consenso dei genitori o di chi esercita la responsabilità genitoriale."
+  },
+  "aree": [
+    {
+      "id": "genitorialita",
+      "titolo": "Sostegno alla genitorialità",
+      "breve": "Consulenza e sostegno ai genitori nelle fasi educative più complesse e nella relazione con i figli.",
+      "testo": [
+        "Essere genitori comporta passaggi complessi: l’ingresso a scuola, l’adolescenza, una separazione, un cambiamento nella famiglia. Il sostegno alla genitorialità offre uno spazio di confronto per comprendere ciò che sta accadendo nella relazione con i figli.",
+        "Insieme si individuano le modalità educative più adatte alla fase che la famiglia sta attraversando, tenendo conto anche del contesto scolastico in cui i figli crescono."
+      ]
+    },
+    {
+      "id": "scuola-dsa-adhd",
+      "titolo": "Scuola, DSA e ADHD",
+      "breve": "Orientamento e supporto per difficoltà di apprendimento e di attenzione, in collaborazione con la famiglia e gli insegnanti.",
+      "testo": [
+        "I DSA, disturbi specifici dell’apprendimento, riguardano abilità come la lettura, la scrittura e il calcolo: ne fanno parte la dislessia, la disortografia, la disgrafia e la discalculia. L’ADHD è un disturbo del neurosviluppo che interessa l’attenzione, l’impulsività e il livello di attività.",
+        "Offro orientamento e supporto a ragazzi e genitori e favorisco il dialogo con gli insegnanti, per costruire strategie condivise. Il percorso non sostituisce la valutazione diagnostica, affidata a équipe specializzate, ma può accompagnare la famiglia prima e dopo."
+      ]
+    },
+    {
+      "id": "adolescenza",
+      "titolo": "Adolescenza",
+      "breve": "Uno spazio di ascolto dedicato ai ragazzi e un lavoro di prevenzione dei comportamenti a rischio.",
+      "testo": [
+        "L’adolescenza è una fase di grandi trasformazioni, in cui possono emergere difficoltà emotive, chiusura, conflitti in famiglia o un calo nel rendimento scolastico.",
+        "Ai ragazzi offro uno spazio di ascolto riservato e, quando è utile, coinvolgo anche i genitori. Mi occupo inoltre di prevenzione dei comportamenti a rischio, ambito in cui ho maturato una lunga esperienza."
+      ]
+    },
+    {
+      "id": "coppia-famiglia",
+      "titolo": "Coppia e famiglia",
+      "breve": "Sostegno nelle difficoltà relazionali e comunicative e nei momenti di crisi.",
+      "testo": [
+        "Le difficoltà di una coppia o di una famiglia raramente dipendono da una sola persona. Comunicazione che si inceppa, conflitti ricorrenti, momenti di crisi o di cambiamento possono essere affrontati guardando alle relazioni nel loro insieme.",
+        "Secondo l’approccio sistemico-relazionale, gli incontri sono l’occasione per comprendere le dinamiche in atto e cercare insieme modalità di dialogo più funzionali."
+      ]
+    },
+    {
+      "id": "umore",
+      "titolo": "Disturbi dell’umore",
+      "breve": "Tristezza persistente, calo di energia e sbalzi d’umore che incidono sulla vita quotidiana.",
+      "testo": [
+        "Tristezza persistente, perdita di interesse, calo di energia, irritabilità o sbalzi d’umore possono incidere in modo significativo sulla vita quotidiana, sul lavoro e sulle relazioni.",
+        "Il colloquio psicologico offre uno spazio per dare un nome a ciò che si sta vivendo, comprenderne il significato e individuare le risorse su cui contare. Quando necessario, posso indicare un confronto con altri professionisti, come il medico di base o lo psichiatra."
+      ]
+    }
+  ],
+  "primoColloquio": {
+    "titolo": "Il primo colloquio",
+    "lead": "Il primo colloquio è un incontro di conoscenza: serve a comprendere la tua richiesta e a valutare insieme se e come proseguire.",
+    "aspettarsiTitolo": "Cosa aspettarsi",
+    "aspettarsi": [
+      "Durante il primo incontro potrai raccontare ciò che ti ha portato a chiedere un colloquio, con i tuoi tempi. Non è necessario prepararsi né sapere già cosa dire: il colloquio viene guidato con attenzione e senza giudizio.",
+      "Al termine si condivide una prima lettura della situazione e, se lo ritieni utile, si definiscono insieme obiettivi, frequenza e modalità del percorso. Tutto ciò che emerge è tutelato dal segreto professionale."
+    ],
+    "passiTitolo": "Come iniziare",
+    "luogoTitolo": "In studio o online",
+    "studioTitolo": "Nello studio ad Acilia",
+    "studioTesto": "Lo studio si trova presso Poliofficina, in Via G. Bruno Ferrari 43, 00125 Roma. Si riceve su appuntamento.",
+    "onlineTitolo": "Online",
+    "onlineTesto": "Il colloquio può svolgersi anche in videochiamata, con la stessa cura e la stessa riservatezza. È sufficiente una connessione stabile e un luogo tranquillo in cui parlare liberamente.",
+    "costiTitolo": "Durata e costi",
+    "costiTesto": "Ogni incontro dura 60 minuti. La frequenza viene concordata insieme, in base alle esigenze e agli obiettivi del percorso.",
+    "costiNota": "Costo per singolo incontro di 60 minuti.",
+    "notaMinori": "Per i minorenni il percorso richiede il consenso dei genitori o di chi esercita la responsabilità genitoriale."
+  },
+  "faq": {
+    "titolo": "Domande frequenti",
+    "lead": "Le risposte alle domande che vengono poste più spesso prima di iniziare.",
+    "domande": [
+      { "domanda": "Quanto dura un incontro?", "risposta": ["Ogni incontro dura 60 minuti, sia in studio sia online."] },
+      { "domanda": "Ogni quanto ci si incontra?", "risposta": ["La frequenza viene definita insieme dopo i primi colloqui, in base alle esigenze e agli obiettivi del percorso, e può cambiare nel tempo."] },
+      { "domanda": "È meglio un colloquio in studio o online?", "risposta": ["Entrambe le modalità offrono la stessa cura e la stessa riservatezza. Lo studio si trova ad Acilia, presso Poliofficina; il colloquio online è una soluzione utile se abiti lontano o hai poco tempo per gli spostamenti. Puoi scegliere al momento del primo contatto."] },
+      { "domanda": "Ciò che racconto resta riservato?", "risposta": ["Sì. Sono tenuta al segreto professionale previsto dal Codice Deontologico degli Psicologi, salvo i casi stabiliti dalla legge. I dati personali sono trattati nel rispetto della normativa sulla privacy."] },
+      { "domanda": "È possibile un percorso per un figlio minorenne?", "risposta": ["Sì. Per avviare un percorso con un minorenne è necessario il consenso dei genitori o di chi esercita la responsabilità genitoriale. Quando è utile, la famiglia viene coinvolta negli incontri."] },
+      { "domanda": "Quanto costa un incontro?", "mostra": "tariffe", "risposta": ["Primo colloquio: [DA VERIFICARE: costo del primo colloquio]"] },
+      { "domanda": "È possibile avere la fattura?", "risposta": ["[DA VERIFICARE: rilascio della fattura e detraibilità delle prestazioni come spese sanitarie]"] },
+      { "domanda": "Come posso disdire un appuntamento?", "risposta": ["[DA COMPLETARE: modalità e preavviso per disdire o spostare un appuntamento]"] },
+      { "domanda": "Come si prenota il primo colloquio?", "mostra": "contatti", "risposta": ["Puoi telefonare, scrivere su WhatsApp o via email, oppure usare il modulo nella pagina Contatti."] }
+    ]
+  },
+  "contatti": {
+    "titolo": "Contatti",
+    "lead": "Per fissare un primo colloquio o chiedere informazioni puoi chiamarmi, scrivermi su WhatsApp o via email, oppure usare il modulo. Riceve su appuntamento.",
+    "studioTitolo": "Lo studio",
+    "online": "I colloqui si svolgono anche online, in videochiamata.",
+    "moduloTitolo": "Scrivimi"
+  }
+}

@@ -2,6 +2,7 @@
 import TestoLegale from '../components/TestoLegale.astro';
 import Segnaposto from '../components/Segnaposto.astro';
 import { url } from '../lib/url';
+import { conSegnaposto } from '../lib/testi';
 import { sito } from '../data/sito';
 
 const s = sito.studio;
@@ -25,7 +26,7 @@ const s = sito.studio;
     {s.via}, {s.cap} {s.citta} (presso {s.presso})<br />
     Email: <a href={`mailto:${sito.email}`}>{sito.email}</a><br />
     Telefono: <a href={sito.telefonoLink}>{sito.telefono}</a><br />
-    P.IVA {sito.partitaIva ?? <Segnaposto testo="P.IVA" />}
+    P.IVA <Fragment set:html={conSegnaposto(sito.partitaIva)} />
   </address>
 
   <h2>Quali dati vengono trattati</h2>

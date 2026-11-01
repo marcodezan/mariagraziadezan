@@ -1,0 +1,16 @@
+---
+// Blocco di uno o più paragrafi modificabile: in modalità modifica si può scrivere
+// liberamente e andare a capo per creare nuovi paragrafi.
+import { leggi, conSegnaposto } from '../lib/testi';
+
+interface Props {
+  k: string;
+  class?: string;
+  classeParagrafo?: string;
+}
+const { k, class: classe, classeParagrafo } = Astro.props;
+const paragrafi: string[] = leggi(k) ?? [];
+---
+<div data-testo={k} data-tipo="paragrafi" class={classe}>
+  {paragrafi.map((p) => <p class={classeParagrafo} set:html={conSegnaposto(p)} />)}
+</div>

@@ -1,0 +1,439 @@
+---
+// Modalità modifica: dopo aver inserito il codice, la Dottoressa tocca un testo,
+// lo riscrive e preme "Salva". Le modifiche vengono salvate nel file dei testi su
+// GitHub, che ripubblica il sito in automatico (1–2 minuti).
+// Il codice è un token GitHub personale: resta solo nel browser di chi lo inserisce.
+import { sito } from '../data/sito';
+
+const r = sito.repository;
+---
+<div
+  id="mm"
+  data-proprietario={r.proprietario}
+  data-repo={r.nome}
+  data-ramo={r.ramo}
+  data-file={r.file}
+>
+  <dialog id="mm-accesso" class="mm-dialogo" aria-labelledby="mm-accesso-titolo">
+    <form method="dialog" class="mm-dialogo__form">
+      <h2 id="mm-accesso-titolo">Area riservata</h2>
+      <p>Inserisci il codice di accesso per modificare i testi del sito.</p>
+      <label for="mm-codice">Codice di accesso</label>
+      <input id="mm-codice" type="password" autocomplete="off" spellcheck="false" />
+      <p class="mm-errore" id="mm-errore" role="alert" hidden></p>
+      <div class="mm-dialogo__azioni">
+        <button type="submit" class="btn" id="mm-entra" value="entra">Entra</button>
+        <button type="button" class="btn btn--contorno" id="mm-chiudi">Annulla</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div id="mm-barra" class="mm-barra" hidden>
+    <p class="mm-barra__stato" id="mm-stato" role="status" aria-live="polite">
+      Modalità modifica: tocca un testo per cambiarlo.
+    </p>
+    <div class="mm-barra__azioni">
+      <button type="button" class="btn" id="mm-salva">Salva</button>
+      <button type="button" class="btn btn--contorno" id="mm-annulla">Annulla</button>
+      <button type="button" class="btn btn--contorno" id="mm-esci">Esci</button>
+    </div>
+    <button type="button" class="mm-barra__scollega" id="mm-scollega">Scollega questo dispositivo</button>
+  </div>
+</div>
+
+<script>
+  const radice = document.getElementById('mm')!;
+  const { proprietario, repo, ramo, file } = radice.dataset;
+  const API = `https://api.github.com/repos/${proprietario}/${repo}`;
+  const CHIAVE_CODICE = 'mgdz-codice';
+  const CHIAVE_SESSIONE = 'mgdz-in-modifica';
+  const PAROLA_VIETATA = /psicoterapeut/i;
+
+  const dialogo = document.getElementById('mm-accesso') as HTMLDialogElement;
+  const campoCodice = document.getElementById('mm-codice') as HTMLInputElement;
+  const errore = document.getElementById('mm-errore')!;
+  const barra = document.getElementById('mm-barra')!;
+  const stato = document.getElementById('mm-stato')!;
+  const pulsanteSalva = document.getElementById('mm-salva') as HTMLButtonElement;
+
+  let originali = new Map<string, unknown>();
+  let modificato = false;
+  let attiva = false;
+
+  // --- Memoria del browser (può non essere disponibile: si gestisce l'errore) ---
+  const memoria = {
+    leggi: (s: Storage, k: string) => { try { return s.getItem(k); } catch { return null; } },
+    scrivi: (s: Storage, k: string, v: string) => { try { s.setItem(k, v); } catch {} },
+    togli: (s: Storage, k: string) => { try { s.removeItem(k); } catch {} },
+  };
+  const codice = () => memoria.leggi(localStorage, CHIAVE_CODICE);
+
+  function intestazioni(conCodice = true): HeadersInit {
+    const h: Record<string, string> = { Accept: 'application/vnd.github+json' };
+    if (conCodice && codice()) h.Authorization = `Bearer ${codice()}`;
+    return h;
+  }
+
+  function avviso(testo: string, tipo: 'info' | 'ok' | 'errore' = 'info') {
+    stato.textContent = testo;
+    stato.dataset.tipo = tipo;
+  }
+
+  // --- Lettura dei testi dalla pagina ---
+  const elementi = () => [...document.querySelectorAll<HTMLElement>('[data-testo]')];
+
+  function valore(el: HTMLElement): string | string[] {
+    if (el.dataset.tipo === 'paragrafi') {
+      return el.innerText.split(/\n+/).map((t) => t.replace(/\s+/g, ' ').trim()).filter(Boolean);
+    }
+    return el.innerText.replace(/\s+/g, ' ').trim();
+  }
+
+  function raccogli() {
+    const valori = new Map<string, string | string[]>();
+    for (const el of elementi()) if (!valori.has(el.dataset.testo!)) valori.set(el.dataset.testo!, valore(el));
+    return valori;
+  }
+
+  // --- Accesso con il codice ---
+  async function verificaCodice(c: string) {
+    const r = await fetch(API, { headers: { Accept: 'application/vnd.github+json', Authorization: `Bearer ${c}` } });
+    if (r.status === 401) throw new Error('Il codice non è valido o è scaduto.');
+    if (!r.ok) throw new Error('Non è stato possibile verificare il codice. Controlla la connessione e riprova.');
+    const dati = await r.json();
+    if (dati.permissions && dati.permissions.push === false) throw new Error('Questo codice non permette di modificare il sito.');
+  }
+
+  document.addEventListener('click', (e) => {
+    const apri = (e.target as HTMLElement).closest('[data-apri-modifica]');
+    if (!apri) return;
+    e.preventDefault();
+    if (codice()) attivaModifica();
+    else { errore.hidden = true; campoCodice.value = ''; dialogo.showModal(); campoCodice.focus(); }
+  });
+
+  document.getElementById('mm-chiudi')!.addEventListener('click', () => dialogo.close());
+
+  dialogo.querySelector('form')!.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const c = campoCodice.value.trim();
+    if (!c) { errore.textContent = 'Inserisci il codice di accesso.'; errore.hidden = false; return; }
+    const entra = document.getElementById('mm-entra') as HTMLButtonElement;
+    entra.disabled = true;
+    entra.textContent = 'Verifica…';
+    try {
+      await verificaCodice(c);
+      memoria.scrivi(localStorage, CHIAVE_CODICE, c);
+      dialogo.close();
+      attivaModifica();
+    } catch (err) {
+      errore.textContent = (err as Error).message;
+      errore.hidden = false;
+    } finally {
+      entra.disabled = false;
+      entra.textContent = 'Entra';
+    }
+  });
+
+  // --- Attivazione della modalità modifica ---
+  const scriviSoloTesto = (() => {
+    const prova = document.createElement('div');
+    prova.contentEditable = 'plaintext-only';
+    return prova.contentEditable === 'plaintext-only';
+  })();
+
+  function attivaModifica() {
+    if (attiva) return;
+    attiva = true;
+    memoria.scrivi(sessionStorage, CHIAVE_SESSIONE, '1');
+    document.documentElement.classList.add('in-modifica');
+    document.querySelectorAll('details').forEach((d) => (d.open = true));
+    for (const el of elementi()) {
+      el.contentEditable = scriviSoloTesto ? 'plaintext-only' : 'true';
+      el.spellcheck = true;
+    }
+    originali = raccogli();
+    modificato = false;
+    barra.hidden = false;
+    avviso('Modalità modifica: tocca un testo per cambiarlo.');
+  }
+
+  function disattiva() {
+    memoria.togli(sessionStorage, CHIAVE_SESSIONE);
+    modificato = false;
+    location.reload();
+  }
+
+  // Titoli e righe: niente "a capo". Paragrafi: "a capo" crea un nuovo paragrafo.
+  document.addEventListener('keydown', (e) => {
+    const el = (e.target as HTMLElement).closest?.('[data-testo]') as HTMLElement | null;
+    if (!attiva || !el) return;
+    if (e.key === 'Enter' && el.dataset.tipo !== 'paragrafi') e.preventDefault();
+  });
+
+  // Incolla sempre come testo semplice (senza formattazione da Word o dal web)
+  document.addEventListener('paste', (e) => {
+    const el = (e.target as HTMLElement).closest?.('[data-testo]');
+    if (!attiva || !el || scriviSoloTesto) return;
+    e.preventDefault();
+    document.execCommand('insertText', false, e.clipboardData?.getData('text/plain') ?? '');
+  });
+
+  // Lo stesso dato (es. il telefono) compare in più punti: li aggiorna tutti insieme
+  document.addEventListener('input', (e) => {
+    const el = (e.target as HTMLElement).closest?.('[data-testo]') as HTMLElement | null;
+    if (!attiva || !el) return;
+    modificato = true;
+    avviso('Ci sono modifiche non salvate.');
+    if (el.dataset.tipo === 'paragrafi') return;
+    for (const altro of document.querySelectorAll<HTMLElement>(`[data-testo="${el.dataset.testo}"]`)) {
+      if (altro !== el) altro.textContent = el.textContent;
+    }
+  });
+
+  // In modifica, toccare un testo dentro un collegamento non apre il collegamento
+  document.addEventListener('click', (e) => {
+    if (!attiva) return;
+    const t = e.target as HTMLElement;
+    if (t.closest('[data-testo]') && t.closest('a, summary')) e.preventDefault();
+  }, true);
+
+  window.addEventListener('beforeunload', (e) => {
+    if (attiva && modificato) { e.preventDefault(); e.returnValue = ''; }
+  });
+
+  // --- Salvataggio su GitHub ---
+  const daBase64 = (b64: string) =>
+    new TextDecoder().decode(Uint8Array.from(atob(b64.replace(/\s/g, '')), (c) => c.charCodeAt(0)));
+  const aBase64 = (testo: string) => {
+    let binario = '';
+    for (const b of new TextEncoder().encode(testo)) binario += String.fromCharCode(b);
+    return btoa(binario);
+  };
+
+  function imposta(oggetto: any, chiave: string, nuovo: unknown) {
+    const parti = chiave.split('.');
+    const ultima = parti.pop()!;
+    const contenitore = parti.reduce((o, p) => o?.[p], oggetto);
+    if (contenitore == null || !(ultima in contenitore)) throw new Error(`Testo non trovato: ${chiave}`);
+    contenitore[ultima] = nuovo;
+  }
+
+  async function salvaSuGitHub(modifiche: Map<string, unknown>, tentativo = 1): Promise<string> {
+    const lettura = await fetch(`${API}/contents/${file}?ref=${ramo}`, { headers: intestazioni(), cache: 'no-store' });
+    if (lettura.status === 401) throw Object.assign(new Error('codice'), { codice: true });
+    if (!lettura.ok) throw new Error('lettura');
+    const { content, sha } = await lettura.json();
+    const testi = JSON.parse(daBase64(content));
+    for (const [chiave, nuovo] of modifiche) imposta(testi, chiave, nuovo);
+
+    const pagina = document.title.split('|')[0].trim();
+    const scrittura = await fetch(`${API}/contents/${file}`, {
+      method: 'PUT',
+      headers: { ...intestazioni(), 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        message: `Testi aggiornati dal sito: ${pagina}`,
+        content: aBase64(JSON.stringify(testi, null, 2) + '\n'),
+        sha,
+        branch: ramo,
+      }),
+    });
+    if (scrittura.status === 409 && tentativo < 3) return salvaSuGitHub(modifiche, tentativo + 1);
+    if (scrittura.status === 401) throw Object.assign(new Error('codice'), { codice: true });
+    if (!scrittura.ok) throw new Error('scrittura');
+    return (await scrittura.json()).commit.sha as string;
+  }
+
+  async function seguiPubblicazione(sha: string) {
+    for (let i = 0; i < 40; i++) {
+      await new Promise((r) => setTimeout(r, 10000));
+      try {
+        const r = await fetch(`${API}/actions/runs?head_sha=${sha}`, { headers: intestazioni(false), cache: 'no-store' });
+        const run = (await r.json()).workflow_runs?.find((w: any) => w.name === 'Pubblica su GitHub Pages');
+        if (run?.status === 'completed') {
+          if (run.conclusion === 'success') avviso('Fatto: le modifiche sono online.', 'ok');
+          else avviso('Salvato, ma la pubblicazione non è riuscita. Avvisa chi gestisce il sito.', 'errore');
+          return;
+        }
+      } catch {}
+    }
+  }
+
+  pulsanteSalva.addEventListener('click', async () => {
+    const attuali = raccogli();
+    const modifiche = new Map<string, unknown>();
+    for (const [chiave, v] of attuali) {
+      if (JSON.stringify(v) !== JSON.stringify(originali.get(chiave))) modifiche.set(chiave, v);
+    }
+    if (!modifiche.size) { avviso('Nessuna modifica da salvare.'); return; }
+
+    for (const [chiave, v] of modifiche) {
+      const vuoto = Array.isArray(v) ? v.length === 0 : !v;
+      const el = document.querySelector<HTMLElement>(`[data-testo="${chiave}"]`);
+      if (vuoto) { avviso('Un testo è rimasto vuoto: scrivi qualcosa oppure premi Annulla.', 'errore'); el?.focus(); return; }
+      if (PAROLA_VIETATA.test(JSON.stringify(v))) {
+        avviso('Il titolo "psicoterapeuta" non può comparire nel sito finché non è annotato all\'Albo.', 'errore');
+        el?.focus();
+        return;
+      }
+    }
+
+    pulsanteSalva.disabled = true;
+    pulsanteSalva.textContent = 'Salvataggio…';
+    try {
+      const sha = await salvaSuGitHub(modifiche);
+      originali = attuali;
+      modificato = false;
+      avviso('Salvato. Il sito pubblico si aggiorna entro 1–2 minuti…', 'ok');
+      seguiPubblicazione(sha);
+    } catch (err: any) {
+      if (err?.codice) {
+        memoria.togli(localStorage, CHIAVE_CODICE);
+        avviso('Il codice non è più valido. Esci e accedi di nuovo con un codice aggiornato.', 'errore');
+      } else {
+        avviso('Salvataggio non riuscito. Controlla la connessione e riprova: le modifiche sono ancora qui.', 'errore');
+      }
+    } finally {
+      pulsanteSalva.disabled = false;
+      pulsanteSalva.textContent = 'Salva';
+    }
+  });
+
+  document.getElementById('mm-annulla')!.addEventListener('click', () => {
+    if (!modificato || confirm('Annullare le modifiche non salvate?')) { modificato = false; location.reload(); }
+  });
+  document.getElementById('mm-esci')!.addEventListener('click', () => {
+    if (!modificato || confirm('Ci sono modifiche non salvate. Uscire senza salvarle?')) disattiva();
+  });
+  document.getElementById('mm-scollega')!.addEventListener('click', () => {
+    if (confirm('Scollegare questo dispositivo? Per modificare di nuovo servirà il codice.')) {
+      memoria.togli(localStorage, CHIAVE_CODICE);
+      disattiva();
+    }
+  });
+
+  // Se si cambia pagina durante la modifica, la modalità resta attiva
+  if (memoria.leggi(sessionStorage, CHIAVE_SESSIONE) === '1' && codice()) attivaModifica();
+</script>
+
+<style>
+  .mm-dialogo {
+    width: min(26rem, calc(100% - 2rem));
+    padding: 0;
+    border: 1px solid var(--filetto);
+    border-radius: var(--raggio);
+    background: var(--sfondo);
+    color: var(--testo);
+  }
+  .mm-dialogo::backdrop {
+    background: rgb(44 74 110 / 0.35);
+  }
+  .mm-dialogo__form {
+    display: grid;
+    gap: 0.75rem;
+    padding: 1.5rem;
+  }
+  .mm-dialogo h2 {
+    font-size: var(--t-l);
+  }
+  .mm-dialogo label {
+    font-weight: 600;
+  }
+  .mm-dialogo input {
+    min-height: 3rem;
+    padding: 0.6rem 0.9rem;
+    font: inherit;
+    color: var(--testo);
+    background: #fff;
+    border: 1.5px solid var(--filetto);
+    border-radius: 0.6rem;
+  }
+  .mm-errore {
+    color: #a3322a;
+    font-weight: 600;
+    font-size: var(--t-piccolo);
+  }
+  .mm-dialogo__azioni {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+  }
+
+  .mm-barra {
+    position: fixed;
+    inset: auto 0 0 0;
+    z-index: 100;
+    display: grid;
+    gap: 0.6rem;
+    padding: 0.8rem var(--margine) calc(0.8rem + env(safe-area-inset-bottom));
+    background: var(--sabbia);
+    border-top: 2px solid var(--terracotta);
+    box-shadow: 0 -6px 20px rgb(44 74 110 / 0.12);
+  }
+  .mm-barra[hidden] {
+    display: none;
+  }
+  .mm-barra__stato {
+    margin: 0;
+    font-size: var(--t-piccolo);
+    font-weight: 600;
+  }
+  .mm-barra__stato[data-tipo='ok'] {
+    color: var(--salvia-scuro);
+  }
+  .mm-barra__stato[data-tipo='errore'] {
+    color: #a3322a;
+  }
+  .mm-barra__azioni {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr;
+    gap: 0.5rem;
+  }
+  .mm-barra__azioni .btn {
+    min-height: 2.75rem;
+    padding-inline: 0.75rem;
+    font-size: 1rem;
+  }
+  .mm-barra__scollega {
+    justify-self: start;
+    padding: 0;
+    background: none;
+    border: 0;
+    font: inherit;
+    font-size: var(--t-piccolo);
+    color: var(--testo-tenue);
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  @media (min-width: 48rem) {
+    .mm-barra {
+      grid-template-columns: 1fr auto;
+      align-items: center;
+    }
+    .mm-barra__azioni {
+      display: flex;
+    }
+  }
+
+  /* Testi modificabili: bordino tratteggiato, più evidente quando si scrive */
+  :global(.in-modifica [data-testo]) {
+    outline: 1.5px dashed var(--salvia);
+    outline-offset: 3px;
+    border-radius: 2px;
+    cursor: text;
+  }
+  :global(.in-modifica [data-testo]:hover) {
+    background: rgb(234 223 207 / 0.5);
+  }
+  :global(.in-modifica [data-testo]:focus) {
+    outline: 2px solid var(--terracotta-scuro);
+    background: #fff;
+  }
+  :global(.in-modifica .barra) {
+    display: none;
+  }
+  :global(.in-modifica body) {
+    padding-bottom: 9rem;
+  }
+</style>
