@@ -10,20 +10,41 @@
     "orari": "Riceve su appuntamento",
     "partitaIva": "[DA COMPLETARE: P.IVA]",
     "tariffe": [
-      { "voce": "Colloquio individuale", "prezzo": "60" },
-      { "voce": "Sostegno alla genitorialità", "prezzo": "75" },
-      { "voce": "Sostegno di coppia", "prezzo": "80" }
+      {
+        "voce": "Colloquio individuale",
+        "prezzo": "60"
+      },
+      {
+        "voce": "Sostegno alla genitorialità",
+        "prezzo": "75"
+      },
+      {
+        "voce": "Sostegno di coppia",
+        "prezzo": "80"
+      }
     ]
   },
   "home": {
     "titolo": "Ogni difficoltà ha una storia, da comprendere insieme.",
     "intro": "Sono Maria Grazia De Zan, psicologa clinica con formazione sistemico-relazionale. Ricevo adolescenti, adulti, coppie e famiglie nel mio studio ad Acilia e online.",
-    "chiTitolo": "A chi mi rivolgo",
+    "chiTitolo": "A chi mi rivolgo:",
     "destinatari": [
-      { "nome": "Adolescenti", "testo": "Difficoltà emotive, scolastiche e relazionali legate alla crescita, a volte difficili da esprimere a parole." },
-      { "nome": "Adulti", "testo": "Periodi di umore basso, stanchezza emotiva, fasi di cambiamento o di scelta vissute con difficoltà." },
-      { "nome": "Coppie", "testo": "Difficoltà di comunicazione, conflitti ricorrenti, momenti di crisi o di trasformazione della relazione." },
-      { "nome": "Famiglie", "testo": "Cambiamenti, conflitti e fasi del ciclo di vita familiare che richiedono un nuovo equilibrio." }
+      {
+        "nome": "Adolescenti",
+        "testo": "Difficoltà emotive, scolastiche e relazionali legate alla crescita, a volte difficili da esprimere a parole."
+      },
+      {
+        "nome": "Adulti",
+        "testo": "Periodi di umore basso, stanchezza emotiva, fasi di cambiamento o di scelta vissute con difficoltà."
+      },
+      {
+        "nome": "Coppie",
+        "testo": "Difficoltà di comunicazione, conflitti ricorrenti, momenti di crisi o di trasformazione della relazione."
+      },
+      {
+        "nome": "Famiglie",
+        "testo": "Cambiamenti, conflitti e fasi del ciclo di vita familiare che richiedono un nuovo equilibrio."
+      }
     ],
     "genitori": "Offro inoltre consulenza ai genitori sulle questioni educative, per comprendere ciò che un figlio sta vivendo e come sostenerlo.",
     "areeTitolo": "Aree di intervento",
@@ -41,9 +62,18 @@
     "passiTitolo": "Come iniziare"
   },
   "passi": [
-    { "titolo": "Il primo contatto", "testo": "Puoi contattarmi per telefono, WhatsApp, email o tramite il modulo del sito per fissare un appuntamento." },
-    { "titolo": "Il primo colloquio", "testo": "In studio ad Acilia oppure online: un incontro dedicato ad ascoltare la tua richiesta e a conoscerci." },
-    { "titolo": "La definizione del percorso", "testo": "Valutiamo insieme se e come proseguire, concordando obiettivi, frequenza e modalità degli incontri." }
+    {
+      "titolo": "Il primo contatto",
+      "testo": "Puoi contattarmi per telefono, WhatsApp, email o tramite il modulo del sito per fissare un appuntamento."
+    },
+    {
+      "titolo": "Il primo colloquio",
+      "testo": "In studio ad Acilia oppure online: un incontro dedicato ad ascoltare la tua richiesta e a conoscerci."
+    },
+    {
+      "titolo": "La definizione del percorso",
+      "testo": "Valutiamo insieme se e come proseguire, concordando obiettivi, frequenza e modalità degli incontri."
+    }
   ],
   "cta": {
     "titolo": "Quando lo ritieni opportuno, puoi fissare un primo colloquio.",
@@ -138,15 +168,62 @@
     "titolo": "Domande frequenti",
     "lead": "Le risposte alle domande che vengono poste più spesso prima di iniziare.",
     "domande": [
-      { "domanda": "Quanto dura un incontro?", "risposta": ["Ogni incontro dura 60 minuti, sia in studio sia online."] },
-      { "domanda": "Ogni quanto ci si incontra?", "risposta": ["La frequenza viene definita insieme dopo i primi colloqui, in base alle esigenze e agli obiettivi del percorso, e può cambiare nel tempo."] },
-      { "domanda": "È meglio un colloquio in studio o online?", "risposta": ["Entrambe le modalità offrono la stessa cura e la stessa riservatezza. Lo studio si trova ad Acilia, presso Poliofficina; il colloquio online è una soluzione utile se abiti lontano o hai poco tempo per gli spostamenti. Puoi scegliere al momento del primo contatto."] },
-      { "domanda": "Ciò che racconto resta riservato?", "risposta": ["Sì. Sono tenuta al segreto professionale previsto dal Codice Deontologico degli Psicologi, salvo i casi stabiliti dalla legge. I dati personali sono trattati nel rispetto della normativa sulla privacy."] },
-      { "domanda": "È possibile un percorso per un figlio minorenne?", "risposta": ["Sì. Per avviare un percorso con un minorenne è necessario il consenso dei genitori o di chi esercita la responsabilità genitoriale. Quando è utile, la famiglia viene coinvolta negli incontri."] },
-      { "domanda": "Quanto costa un incontro?", "mostra": "tariffe", "risposta": ["Primo colloquio: [DA VERIFICARE: costo del primo colloquio]"] },
-      { "domanda": "È possibile avere la fattura?", "risposta": ["[DA VERIFICARE: rilascio della fattura e detraibilità delle prestazioni come spese sanitarie]"] },
-      { "domanda": "Come posso disdire un appuntamento?", "risposta": ["[DA COMPLETARE: modalità e preavviso per disdire o spostare un appuntamento]"] },
-      { "domanda": "Come si prenota il primo colloquio?", "mostra": "contatti", "risposta": ["Puoi telefonare, scrivere su WhatsApp o via email, oppure usare il modulo nella pagina Contatti."] }
+      {
+        "domanda": "Quanto dura un incontro?",
+        "risposta": [
+          "Ogni incontro dura 60 minuti, sia in studio sia online."
+        ]
+      },
+      {
+        "domanda": "Ogni quanto ci si incontra?",
+        "risposta": [
+          "La frequenza viene definita insieme dopo i primi colloqui, in base alle esigenze e agli obiettivi del percorso, e può cambiare nel tempo."
+        ]
+      },
+      {
+        "domanda": "È meglio un colloquio in studio o online?",
+        "risposta": [
+          "Entrambe le modalità offrono la stessa cura e la stessa riservatezza. Lo studio si trova ad Acilia, presso Poliofficina; il colloquio online è una soluzione utile se abiti lontano o hai poco tempo per gli spostamenti. Puoi scegliere al momento del primo contatto."
+        ]
+      },
+      {
+        "domanda": "Ciò che racconto resta riservato?",
+        "risposta": [
+          "Sì. Sono tenuta al segreto professionale previsto dal Codice Deontologico degli Psicologi, salvo i casi stabiliti dalla legge. I dati personali sono trattati nel rispetto della normativa sulla privacy."
+        ]
+      },
+      {
+        "domanda": "È possibile un percorso per un figlio minorenne?",
+        "risposta": [
+          "Sì. Per avviare un percorso con un minorenne è necessario il consenso dei genitori o di chi esercita la responsabilità genitoriale. Quando è utile, la famiglia viene coinvolta negli incontri."
+        ]
+      },
+      {
+        "domanda": "Quanto costa un incontro?",
+        "mostra": "tariffe",
+        "risposta": [
+          "Primo colloquio: [DA VERIFICARE: costo del primo colloquio]"
+        ]
+      },
+      {
+        "domanda": "È possibile avere la fattura?",
+        "risposta": [
+          "[DA VERIFICARE: rilascio della fattura e detraibilità delle prestazioni come spese sanitarie]"
+        ]
+      },
+      {
+        "domanda": "Come posso disdire un appuntamento?",
+        "risposta": [
+          "[DA COMPLETARE: modalità e preavviso per disdire o spostare un appuntamento]"
+        ]
+      },
+      {
+        "domanda": "Come si prenota il primo colloquio?",
+        "mostra": "contatti",
+        "risposta": [
+          "Puoi telefonare, scrivere su WhatsApp o via email, oppure usare il modulo nella pagina Contatti."
+        ]
+      }
     ]
   },
   "contatti": {
